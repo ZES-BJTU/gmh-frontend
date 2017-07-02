@@ -9,7 +9,9 @@
 
   <!-- Site Properties -->
   <title>光美焕-登录</title>
+  <link rel="shortcut icon" type="image/x-icon" href="css/images/favicon.ico">
 
+  <!--JQuery-->
   <script src="js/jquery.min.js"></script>
   <script src="js/jquery.serialize-object.min.js"></script>
 
@@ -17,63 +19,25 @@
   <link rel="stylesheet" type="text/css" href="css/semantic-ui/semantic.css">
   <script src="css/semantic-ui/semantic.js"></script>
 
+  <!--Style-->
   <link rel="stylesheet" href="css/style.css">
-  <link rel="shortcut icon" type="image/x-icon" href="css/images/favicon.ico">
 
+  <!--Script-->
+  <script src="js/action.js"></script>
+  <script src="js/tools.js"></script>
   <script src="js/script.js"></script>
-  <script>
-    $(document)
-      .ready(function () {
-        $('.ui.form').form({
-          fields: {
-            account: {
-              identifier: 'account',
-              rules: [{
-                  type: 'empty',
-                  prompt: '邮箱不能为空'
-                },
-                {
-                  type: 'email',
-                  prompt: '请输入有效的邮箱'
-                }
-              ]
-            },
-            password: {
-              identifier: 'password',
-              rules: [{
-                type: 'empty',
-                prompt: '密码不能为空'
-              }]
-            }
-          },
-          onSuccess: function (e) {
-            //阻止表单的提交
-            e.preventDefault();
-          }
-        }).api({
-          url: '/staff/login?account={account}&password={password}',
-          serializeForm: true,
-          beforeSend: function (settings) {
-            settings.urlData = settings.data;
-            return settings;
-          }
-        });
-      });
-  </script>
 </head>
 
 <body>
 
-  <div class="ui middle aligned center aligned grid">
-    <div class="column">
-      <h2 class="ui teal image header">
+  <div class="ui middle aligned center aligned righted grid login-grid">
+    <div class="right floated column login-column">
+      <h2 class="ui image header">
         <img src="css/images/logo.png" class="image">
-        <div class="content">
-          光美焕科技皮肤护理
-        </div>
+        <div class="content">光美焕科技皮肤护理</div>
       </h2>
-      <form class="ui large form">
-        <div class="ui segment">
+      <form id="login" class="ui large form">
+        <div class="ui">
           <div class="field">
             <div class="ui left icon input">
               <i class="user icon"></i>
@@ -86,10 +50,11 @@
               <input type="password" name="password" placeholder="请输入密码">
             </div>
           </div>
-          <div class="ui fluid large teal submit button">登录</div>
+          <div class="ui fluid large submit button">登录</div>
         </div>
 
-        <div class="ui error message"></div>
+        <div class="ui error message">
+        </div>
 
       </form>
     </div>

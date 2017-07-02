@@ -1,18 +1,28 @@
-@theme-color:#7bcad9;
-
+@theme-color: #7bcad9;
+@white-color: #ffffff;
 body {
-    background-color: #DADADA;
+    background-color: @white-color;
     font-family: "Microsoft Yahei";
 }
 
-body>.grid {
+.grid.login-grid {
     height: 100%;
-}
-
-.image {
-    margin-top: -100px;
-}
-
-.column {
-    max-width: 450px;
+    margin:0;
+    background: url('images/background.jpg') center no-repeat;;
+    background-size: cover;
+    .login-column {
+        max-width: 400px;
+        margin-right: 100px;
+        background-color: @white-color;
+        border-radius: 0.28571429rem;
+        .header {
+            color: @theme-color;
+        }
+        #login {
+            .button {
+                color: @white-color;
+                background-color: @theme-color;
+            }
+        }
+    }
 }
