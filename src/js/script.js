@@ -1,4 +1,11 @@
 $(document).ready(function () {
+    //下拉框初始化
+    $('.ui.dropdown').dropdown();
+    //菜单按钮点击事件
+    $("#left-menu .item").on('click',function(){
+        $(this).addClass('active').siblings().removeClass('active');
+    })
+    //2017.07.10.zq 登录
     $('#login').form({
         fields: {
             account: {
@@ -29,11 +36,15 @@ $(document).ready(function () {
         action: 'login',
         method: 'POST',
         serializeForm: true,
-        onSuccess: function(data) {
-            if(data.error != null){
-                $('#login').form('add errors',[data.error]);
-            }else{
-                alert(1);
+        onSuccess: function (response) {
+            if (response.error != null) {
+                $('#login').form('add errors', [response.error]);
+            } else {
+                sessionStorage.setItem("id", response.data.id);
+                sessionStorage.setItem("email", response.data.email);
+                sessionStorage.setItem("name", response.data.principalName);
+                setCookie("token", response.data.token);
+                redirect("home.html");
             }
         },
     });

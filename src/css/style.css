@@ -1,6 +1,6 @@
 body {
   background-color: #ffffff;
-  font-family: "Microsoft Yahei";
+  font-family: "Microsoft Yahei" !important;
 }
 .grid.login-grid {
   height: 100%;
@@ -20,4 +20,18 @@ body {
 .grid.login-grid .login-column #login .button {
   color: #ffffff;
   background-color: #7bcad9;
+}
+#left-menu {
+  top: 53px;
+}
+#left-menu .item {
+  color: #909090;
+}
+#left-menu .item.active {
+  color: #7bcad9;
+  border-color: #7bcad9;
+  font-weight: normal;
+}
+.ui.menu .item:before {
+  background: none;
 }

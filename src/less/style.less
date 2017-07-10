@@ -1,14 +1,16 @@
-@theme-color: #7bcad9;
-@white-color: #ffffff;
+@theme-color : #7bcad9;
+@white-color : #ffffff;
+@gray-color : #909090;
 body {
     background-color: @white-color;
-    font-family: "Microsoft Yahei";
+    font-family: "Microsoft Yahei"!important;
 }
 
 .grid.login-grid {
     height: 100%;
-    margin:0;
-    background: url('images/background.jpg') center no-repeat;;
+    margin: 0;
+    background: url('images/background.jpg') center no-repeat;
+    ;
     background-size: cover;
     .login-column {
         max-width: 400px;
@@ -25,4 +27,20 @@ body {
             }
         }
     }
+}
+
+#left-menu {
+    top: 53px;
+    .item{
+        color : @gray-color;
+        &.active{
+            color: @theme-color;
+            border-color: @theme-color;
+            font-weight: normal;
+        }
+    }
+}
+
+.ui.menu .item:before {
+    background: none;
 }
