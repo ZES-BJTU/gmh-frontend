@@ -2,7 +2,7 @@ $(document).ready(function () {
     //下拉框初始化
     $('.ui.dropdown').dropdown();
     //菜单按钮点击事件
-    $("#left-menu .item").on('click',function(){
+    $("#left-menu .item").on('click', function () {
         $(this).addClass('active').siblings().removeClass('active');
     })
     //2017.07.10.zq 登录
@@ -47,5 +47,20 @@ $(document).ready(function () {
                 redirect("home.html");
             }
         },
+        onFailure: function (response) {
+            $('#login').form('add errors', '服务器暂无响应');
+        },
     });
+    $('.logout').api({
+        action: 'logout',
+        on: 'click',
+        method: 'GET',
+        beforeXHR: function (xhr) {
+            // adjust XHR with additional headers
+            xhr.setRequestHeader('X-token', getCookie('token'));
+        },
+        onSuccess: function (response) {
+            alert(response);
+        }
+    })
 })
