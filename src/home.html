@@ -30,8 +30,9 @@
 </head>
 
 <body>
-  <div id="left-menu" class="ui left fixed secondary vertical pointing menu">
-    <a class="item active">首页</a>
+  <button class="ui blue button fake-button" style="display:none;"></button>
+  <div id="left-menu" class="ui left fixed vertical pointing menu">
+    <a class="item active" href="home.html">首页</a>
     <a class="item">预约管理</a>
     <a class="item">到店美容管理</a>
     <a class="item">美容项管理</a>
@@ -42,14 +43,15 @@
     <a class="item">库存分类管理</a>
     <a class="item">员工管理</a>
     <a class="item">报表管理</a>
-    <a class="item">店铺管理</a>
+    <a class="item" href="shopManage.html">店铺管理</a>
   </div>
   <div class="ui top fixed menu">
     <div class="item">
       <img src="css/images/logo.png">光美焕科技皮肤护理
     </div>
     <div class="ui dropdown right item">
-      张三 <i class="dropdown icon"></i>
+      <span id="user-name"></span>
+      <i class="dropdown icon"></i>
       <div class="menu">
         <a class="item">修改密码</a>
         <a class="item logout">退出登录</a>

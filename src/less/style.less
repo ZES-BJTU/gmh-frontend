@@ -1,9 +1,18 @@
 @theme-color : #7bcad9;
+@theme-color-darker : #49bfd6;
 @white-color : #ffffff;
 @gray-color : #909090;
 body {
     background-color: @white-color;
     font-family: "Microsoft Yahei"!important;
+}
+
+.light-blue-btn {
+    color: @white-color;
+    background-color: @theme-color;
+    &:hover {
+        background-color: @theme-color-darker;
+    }
 }
 
 .grid.login-grid {
@@ -22,8 +31,7 @@ body {
         }
         #login {
             .button {
-                color: @white-color;
-                background-color: @theme-color;
+                .light-blue-btn;
             }
         }
     }
@@ -31,12 +39,16 @@ body {
 
 #left-menu {
     top: 53px;
-    .item{
-        color : @gray-color;
-        &.active{
-            color: @theme-color;
-            border-color: @theme-color;
+    .item {
+        color: @gray-color;
+        &.active,
+        &:hover {
+            color: @white-color;
+            background-color: @theme-color;
             font-weight: normal;
+        }
+        &.active:after {
+            background-color: @theme-color;
         }
     }
 }
@@ -45,10 +57,25 @@ body {
     background: none;
 }
 
-.main-wrapper{
+.main-wrapper {
     position: relative;
-    top:53px;
-    left:210px;
-    padding:20px;
-    width : calc(~"100% - 210px");
+    top: 53px;
+    left: 210px;
+    padding: 20px;
+    width: calc(~"100% - 210px");
+}
+
+.ui.form.search {
+    margin-right: 70px;
+    button {
+        .light-blue-btn;
+    }
+}
+
+.ui.table.theme {
+    border-top: 0.2em solid @theme-color;
+}
+
+.ui.modal > .delete-action{
+text-align: center;
 }

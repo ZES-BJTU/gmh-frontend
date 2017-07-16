@@ -9,7 +9,7 @@ function setCookie(name, value) {
 //写cookies
 function setCookie(name,value){
     //cookie有效时间，30分钟
-    var Days = 30;
+    var Days = 7;
     var exp = new Date();
     exp.setTime(exp.getTime() + Days*24*60*60*1000);
     //15.10.11 取消cookie生效时间，ie不关闭的情况下一直有效，关闭浏览器立即失效

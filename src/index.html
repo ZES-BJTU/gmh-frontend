@@ -29,7 +29,6 @@
 </head>
 
 <body>
-
   <div class="ui middle aligned center aligned righted grid login-grid">
     <div class="right floated column login-column">
       <h2 class="ui image header">
@@ -59,7 +58,14 @@
       </form>
     </div>
   </div>
-
+  <script>
+    $(document).ready(function(){
+      //判断是否登陆
+      if(getCookie('token') != null){
+          redirect('home.html');
+      }
+    })
+  </script>
 </body>
 
 </html>
