@@ -49,6 +49,15 @@ body {
 .ui.menu .item:before {
   background: none;
 }
+.ui.menu.page-item .item {
+  color: #909090;
+}
+.ui.menu.page-item .item.active,
+.ui.menu.page-item .item:hover {
+  color: #ffffff;
+  background-color: #7bcad9;
+  font-weight: normal;
+}
 .main-wrapper {
   position: relative;
   top: 53px;
@@ -71,4 +80,7 @@ body {
 }
 .ui.modal > .delete-action {
   text-align: center;
+}
+.ui.selection.dropdown {
+  min-width: auto;
 }
