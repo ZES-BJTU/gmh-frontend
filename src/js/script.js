@@ -18,6 +18,7 @@ $(document).ready(function () {
                 redirect('index.html');
             }
             xhr.setRequestHeader('X-token', getCookie('token'));
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         },
         onSuccess: function (response) {
             if (response.error != null) {
