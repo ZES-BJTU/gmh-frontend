@@ -9,4 +9,8 @@ $.fn.api.settings.api = {
   'shop insert' : url+'/shop/insert',
   'shop update' : url+'/shop/update',
   'shop delByIds' : url+'/shop/delByIds',
+  'stockType getAll' : url+'/stockType/getAll',
+  'stockType insert' : url+'/stockType/insert',
+  'stockType update' : url+'/stockType/update',
+  'stockType delete' : url+'/stockType/delete',
 };
