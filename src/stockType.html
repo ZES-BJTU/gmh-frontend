@@ -170,12 +170,11 @@
                     //阻止表单的提交
                     e.preventDefault();
                     searchInfo = $('.search-input').val();
-                    loadSearchShopList(1, 10, 'search');
+                    loadSearchStockTypeList(1, 10, 'search');
                 }
             })
 
-            //   $('.stock-type-search').form('submit');
-            loadStockType();
+            $('.stock-type-search').form('submit');
 
             //分页按钮点击事件
             $(document).on('click', '.paging .item', function () {
@@ -183,8 +182,8 @@
             })
 
             function loadSearchStockTypeList(pagenum, pagesize, type) {
-                $('.load-shop-list').api({
-                    action: 'shop search',
+                $('.load-stock-type-list').api({
+                    action: 'stockType search',
                     method: 'GET',
                     serializeForm: true,
                     on: 'now',
@@ -218,54 +217,6 @@
                             }
                             $.each(response.data.data, function (i, data) {
                                 var $tr = $('<tr></tr>');
-                                var $id = $('<td class="shopId" style="display:none">' +
-                                    data.id + '</td>');
-                                var $shopName = $('<td class="shopName">' + data.shopName +
-                                    '</td>');
-                                var $manager = $('<td class="shopManager">' + data.manager +
-                                    '</td>');
-                                var $phone = $('<td class="shopPhone">' + data.phone +
-                                    '</td>');
-                                var $address = $('<td class="shopAddress">' + data.address +
-                                    '</td>');
-                                var $operate = $(
-                                    '<td><button class="ui tiny orange button mod-shop">修改</button><button class="ui tiny red button del-shop">删除</button></td>'
-                                )
-                                $tr.append($id);
-                                $tr.append($shopName);
-                                $tr.append($manager);
-                                $tr.append($phone);
-                                $tr.append($address);
-                                $tr.append($operate);
-                                $('#shop-list').append($tr);
-                            })
-                            $('.paging').children().eq(pagenum - 1).addClass('active');
-                        }
-                    },
-                    onFailure: function (response) {
-                        alert('服务器暂无响应');
-                    }
-                })
-            }
-
-            function loadStockType() {
-                $('.load-stock-type-list').api({
-                    action: 'stockType getAll',
-                    method: 'GET',
-                    serializeForm: true,
-                    on: 'now',
-                    beforeXHR: function (xhr) {
-                        verifyToken();
-                        xhr.setRequestHeader('X-token', getCookie('token'));
-                        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                    },
-                    onSuccess: function (response) {
-                        if (response.error != null) {
-                            alert(response.code + ' : ' + response.error);
-                        } else {
-                            $('#stock-type-list').empty();
-                            $.each(response.data, function (i, data) {
-                                var $tr = $('<tr></tr>');
                                 var $id = $('<td class="stockTypeId" style="display:none">' +
                                     data.id + '</td>');
                                 var $typeName = $('<td class="typeName">' + data.typeName +
@@ -278,6 +229,7 @@
                                 $tr.append($operate);
                                 $('#stock-type-list').append($tr);
                             })
+                            $('.paging').children().eq(pagenum - 1).addClass('active');
                         }
                     },
                     onFailure: function (response) {
@@ -332,8 +284,7 @@
                     } else {
                         $('#new-stock-type').form('clear');
                         $('.new-stock-type-modal').modal('hide');
-                        // loadSearchShopList(1, 10, 'search');
-                        loadStockType();
+                        loadSearchStockTypeList(1, 10, 'search');
                     }
                 },
                 onFailure: function (response) {
@@ -344,7 +295,8 @@
             //修改店铺模态框
             $(document).on('click', '.mod-stock-type', function () {
                 $('#mod-stock-type-id').text($(this).parent().parent().find('.stockTypeId').text())
-                $('#mod-stock-type').find('input[name="typeName"]').val($(this).parent().parent().find('.typeName').text());
+                $('#mod-stock-type').find('input[name="typeName"]').val($(this).parent().parent().find(
+                    '.typeName').text());
                 $('.mod-stock-type-modal').modal({
                         closable: false,
                         onDeny: function () {
@@ -400,8 +352,7 @@
                         $('#mod-stock-type-id').text('');
                         $('#mod-stock-type').form('clear');
                         $('.mod-stock-type-modal').modal('hide');
-                        // loadSearchShopList(1, 10, 'search');
-                        loadStockType();
+                        loadSearchStockTypeList(1, 10, 'search');
                     }
                 },
                 onFailure: function (response) {
@@ -444,8 +395,7 @@
                                     } else {
                                         $('#del-stock-type-id').text('');
                                         $('.del-stock-type-modal').modal('hide');
-                                        // loadSearchShopList(1, 10, 'search');
-                                        loadStockType();
+                                        loadSearchStockTypeList(1, 10, 'search');
                                     }
                                 },
                                 onFailure: function (response) {
