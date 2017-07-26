@@ -31,7 +31,7 @@
 
 <body>
   <button class="ui blue button fake-button" style="display:none;"></button>
-  <button class="ui blue button load-stock-type-list" style="display:none;"></button>
+  <button class="ui blue button load-stock-list" style="display:none;"></button>
   <div id="left-menu" class="ui left fixed vertical pointing menu">
     <a class="item" href="home.html">首页</a>
     <a class="item" href="reserve.html">预约管理</a>
@@ -64,16 +64,19 @@
     <div class="ui fluid container">
       <div class="ui grid">
         <div class="row">
-          <div class="four wide left floated left aligned column">
-            <button class="ui blue button new-stock-type">新建</button>
-          </div>
-          <div class="four wide right floated right aligned column">
+          <div class="twelve wide left aligned column">
             <form id="" class="ui form search stock-search">
               <div class="ui action input">
                 <input type="text" class="search-input" placeholder="请输入搜索内容">
+                <select class="ui selection dropdown stock-select">
+                  <option value="0">全部库存分类</option>
+                </select>
                 <button class="ui button submit">搜索</button>
               </div>
             </form>
+          </div>
+          <div class="four wide right aligned column">
+            <button class="ui blue button new-stock">新建</button>
           </div>
         </div>
         <div class="one column row">
@@ -106,12 +109,14 @@
     <div class="content">
       <form id="new-stock" class="ui form">
         <div class="field">
-          <label>库存分类</label>
+          <label>库存名</label>
           <input type="text" name="stockName" placeholder="请输入库存名">
         </div>
         <div class="field">
-          <label>库存名</label>
-          <input type="text" name="stockName" placeholder="请输入库存名">
+          <label>库存分类</label>
+          <select name="typeId" class="ui fluid dropdown new-stock-select">
+            <option value="">请选择库存分类</option>
+          </select>
         </div>
         <div class="field">
           <label>单位</label>
@@ -140,12 +145,14 @@
       <span id="mod-stock-id" style="display:none"></span>
       <form id="mod-stock" class="ui form">
         <div class="field">
-          <label>库存分类</label>
+          <label>库存名</label>
           <input type="text" name="stockName" placeholder="请输入库存名">
         </div>
         <div class="field">
-          <label>库存名</label>
-          <input type="text" name="stockName" placeholder="请输入库存名">
+          <label>库存分类</label>
+          <select name="typeId" class="ui fluid dropdown mod-stock-select">
+            <option value="">请选择库存分类</option>
+          </select>
         </div>
         <div class="field">
           <label>单位</label>
@@ -189,13 +196,43 @@
   <script>
     // 存储搜索的信息,用于点击页码时调用
     var searchInfo = '';
+    var searchTypeId = '';
+    var stockTypeData = [];
     $(document).ready(function () {
-      //库存分类管理搜索
+      //加载库存分类
+      $('.fake-button').api({
+        action: 'stockType getAll',
+        method: 'GET',
+        on: 'now',
+        beforeXHR: function (xhr) {
+          verifyToken();
+          xhr.setRequestHeader('X-token', getCookie('token'));
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        },
+        onSuccess: function (response) {
+          if (response.error != null) {
+            alert(response.code + ' : ' + response.error);
+          } else {
+            $('.stock-select select').find('option:not(:first)').remove();
+            stockTypeData = response.data;
+            $.each(response.data, function (i, data) {
+              var $option = $('<option value="' + data.id + '">' + data.typeName + '</option>');
+              $('.stock-select select').append($option);
+            })
+            $('.stock-select select').val(0);
+          }
+        },
+        onFailure: function (response) {
+          alert('服务器暂无响应');
+        }
+      })
+      //库存管理搜索
       $('.stock-search').form({
         onSuccess: function (e) {
           //阻止表单的提交
           e.preventDefault();
           searchInfo = $('.search-input').val();
+          searchTypeId = $('.stock-select select').val();
           loadSearchStockList(1, 10, 'search');
         }
       })
@@ -210,7 +247,7 @@
       function loadSearchStockList(pagenum, pagesize, type) {
         $('.load-stock-list').api({
           action: 'stock search',
-          method: 'GET',
+          method: 'POST',
           serializeForm: true,
           on: 'now',
           data: {
@@ -225,9 +262,11 @@
           beforeSend: function (settings) {
             if (type == 'search') {
               settings.data.searchString = $('.search-input').val();
+              settings.data.typeId = $('.stock-select select').val();
               return settings;
             } else {
               settings.data.searchString = searchInfo;
+              settings.data.typeId = searchTypeId;
               return settings;
             }
           },
@@ -243,17 +282,21 @@
               }
               $.each(response.data.data, function (i, data) {
                 var $tr = $('<tr></tr>');
-                var $id = $('<td class="stockTypeId" style="display:none">' +
-                  data.id + '</td>');
-                var $typeName = $('<td class="typeName">' + data.typeName +
-                  '</td>');
+                var $id = $('<td class="stockId" style="display:none">' +data.id + '</td>');
+                var $typeId = $('<td class="typeId" style="display:none">' + data.typeId +'</td>');
+                var $stockName = $('<td class="stockName">' + data.stockName +'</td>');
+                var $unit = $('<td class="unit">' + data.unit +'</td>');
+                var $amount = $('<td class="amount">' + data.amount +'</td>');
                 var $operate = $(
-                  '<td><button class="ui tiny orange button mod-stock-type">修改</button><button class="ui tiny red button del-stock-type">删除</button></td>'
+                  '<td><button class="ui tiny orange button mod-stock">修改</button><button class="ui tiny red button del-stock">删除</button></td>'
                 )
                 $tr.append($id);
-                $tr.append($typeName);
+                $tr.append($typeId);
+                $tr.append($stockName);
+                $tr.append($unit);
+                $tr.append($amount);
                 $tr.append($operate);
-                $('#stock-type-list').append($tr);
+                $('#stock-list').append($tr);
               })
               $('.paging').children().eq(pagenum - 1).addClass('active');
             }
@@ -264,11 +307,13 @@
         })
       }
 
-      //新建库存分类模态框
+      //新建库存模态框
       $('.new-stock').on('click', function () {
+        loadStockTypeData();
         $('.new-stock-modal').modal({
             closable: false,
             onDeny: function () {
+              clearStockSelect();
               $('#new-stock').form('clear');
             },
             onApprove: function () {
@@ -278,16 +323,37 @@
           })
           .modal('show');
       })
-      //新建店铺信息提交
+      //新建库存信息提交
       $('#new-stock').form({
         on: 'change',
         inline: true,
         fields: {
-          newTypeName: {
-            identifier: 'typeName',
+          newStockName: {
+            identifier: 'stockName',
             rules: [{
               type: 'empty',
-              prompt: '库存分类名不能为空'
+              prompt: '库存名不能为空'
+            }]
+          },
+          newTypeId: {
+            identifier: 'typeId',
+            rules: [{
+              type: 'empty',
+              prompt: '库存类型不能为空'
+            }]
+          },
+          newUnit: {
+            identifier: 'unit',
+            rules: [{
+              type: 'empty',
+              prompt: '单位不能为空'
+            }]
+          },
+          newAmount: {
+            identifier: 'amount',
+            rules: [{
+              type: 'empty',
+              prompt: '数量不能为空'
             }]
           }
         },
@@ -308,6 +374,7 @@
           if (response.error != null) {
             alert(response.code + ' : ' + response.error);
           } else {
+            clearStockSelect();
             $('#new-stock').form('clear');
             $('.new-stock-modal').modal('hide');
             loadSearchStockList(1, 10, 'search');
@@ -318,13 +385,22 @@
         },
       });
 
-      //修改店铺模态框
+      //修改库存模态框
       $(document).on('click', '.mod-stock', function () {
-        $('#mod-stock-id').text($(this).parent().parent().find('.stockId').text())
+        loadStockTypeData();
+        $('#mod-stock-id').text($(this).parent().parent().find('.stockId').text());
         $('#mod-stock').find('input[name="stockName"]').val($(this).parent().parent().find('.stockName').text());
+        $('.mod-stock-select select').val($(this).parent().parent().find('.typeId').text());
+        //根据typeId获取typeName
+        var defaultTypeName = $('.mod-stock-select select').find('option[value='+$('.mod-stock-select select').val()+']').text();
+        $('.mod-stock-select .text').removeClass('default');
+        $('.mod-stock-select .text').text(defaultTypeName);
+        $('#mod-stock').find('input[name="unit"]').val($(this).parent().parent().find('.unit').text());
+        $('#mod-stock').find('input[name="amount"]').val($(this).parent().parent().find('.amount').text());
         $('.mod-stock-modal').modal({
             closable: false,
             onDeny: function () {
+              clearStockSelect();
               $('#mod-stock').form('clear');
               $('#mod-stock-id').text('');
             },
@@ -335,16 +411,37 @@
           })
           .modal('show');
       })
-      //修改库存分类信息提交
+      //修改库存信息提交
       $('#mod-stock').form({
         on: 'change',
         inline: true,
         fields: {
-          modTypeName: {
-            identifier: 'typeName',
+          modStockName: {
+            identifier: 'stockName',
             rules: [{
               type: 'empty',
-              prompt: '库存分类名不能为空'
+              prompt: '库存名不能为空'
+            }]
+          },
+          modTypeId: {
+            identifier: 'typeId',
+            rules: [{
+              type: 'empty',
+              prompt: '库存类型不能为空'
+            }]
+          },
+          modUnit: {
+            identifier: 'unit',
+            rules: [{
+              type: 'empty',
+              prompt: '单位不能为空'
+            }]
+          },
+          modAmount: {
+            identifier: 'amount',
+            rules: [{
+              type: 'empty',
+              prompt: '数量不能为空'
             }]
           }
         },
@@ -375,6 +472,7 @@
             alert(response.code + ' : ' + response.error);
           } else {
             $('#mod-stock-id').text('');
+            clearStockSelect();
             $('#mod-stock').form('clear');
             $('.mod-stock-modal').modal('hide');
             loadSearchStockList(1, 10, 'search');
@@ -385,7 +483,7 @@
         }
       });
 
-      //删除店铺模态框
+      //删除库存模态框
       $(document).on('click', '.del-stock', function () {
         $('#del-stock-id').text($(this).parent().parent().find('.stockId').text())
         $('.del-stock-modal').modal({
@@ -418,7 +516,7 @@
                   } else {
                     $('#del-stock-id').text('');
                     $('.del-stock-modal').modal('hide');
-                    loadSearchStockTypeList(1, 10, 'search');
+                    loadSearchStockList(1, 10, 'search');
                   }
                 },
                 onFailure: function (response) {
@@ -430,6 +528,21 @@
           })
           .modal('show');
       })
+
+      function loadStockTypeData() {
+        $.each(stockTypeData, function (i, data) {
+          var $option = $('<option value="' + data.id + '">' + data.typeName + '</option>');
+          $('.new-stock-select select').append($option);
+          $('.mod-stock-select select').append($option.clone());
+        })
+      }
+
+      function clearStockSelect() {
+        $('.new-stock-select select').find('option:not(:first)').remove();
+        $('.new-stock-select .text').text('');
+        $('.mod-stock-select select').find('option:not(:first)').remove();
+        $('.mod-stock-select .text').text('');
+      }
     })
   </script>
 </body>

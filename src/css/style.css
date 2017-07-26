@@ -65,15 +65,15 @@ body {
   padding: 20px;
   width: calc(100% - 210px);
 }
-.ui.form.search {
-  margin-right: 70px;
-}
 .ui.form.search button {
   color: #ffffff;
   background-color: #7bcad9;
 }
 .ui.form.search button:hover {
   background-color: #49bfd6;
+}
+.ui.action.input {
+  width: 200px;
 }
 .ui.table.theme {
   border-top: 0.2em solid #7bcad9;
@@ -82,5 +82,5 @@ body {
   text-align: center;
 }
 .ui.selection.dropdown {
-  min-width: auto;
+  min-width: 10em;
 }

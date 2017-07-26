@@ -13,6 +13,7 @@ $.fn.api.settings.api = {
   'stock insert' : url+'/stock/insert',
   'stock update' : url+'/stock/update',
   'stock delete' : url+'/stock/delete',
+  'stockType getAll' : url+'/stockType/getAll',
   'stockType search' : url+'/stockType/search',
   'stockType insert' : url+'/stockType/insert',
   'stockType update' : url+'/stockType/update',
