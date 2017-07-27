@@ -1,4 +1,5 @@
-var url = 'http://123.207.168.112:10000';
+// var url = 'http://123.207.168.112:10000';
+var url = 'http://localhost:8080';
 $.fn.api.settings.api = {
   'staff login' : url+'/staff/login',
   'staff info' : url+'/staff/info',
@@ -18,4 +19,8 @@ $.fn.api.settings.api = {
   'stockType insert' : url+'/stockType/insert',
   'stockType update' : url+'/stockType/update',
   'stockType delete' : url+'/stockType/delete',
+  'staff search' : url+'/staff/search',
+  'staff insert' : url+'/staff/insert',
+  'staff update' : url+'/staff/update',
+  'staff delete' : url+'/staff/delete',
 };

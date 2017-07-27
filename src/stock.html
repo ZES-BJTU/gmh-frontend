@@ -85,6 +85,7 @@
               <thead>
                 <tr>
                   <th>库存名</th>
+                  <th>库存分类</th>
                   <th>单位</th>
                   <th>数量</th>
                   <th>操作</th>
@@ -282,17 +283,19 @@
               }
               $.each(response.data.data, function (i, data) {
                 var $tr = $('<tr></tr>');
-                var $id = $('<td class="stockId" style="display:none">' +data.id + '</td>');
-                var $typeId = $('<td class="typeId" style="display:none">' + data.typeId +'</td>');
-                var $stockName = $('<td class="stockName">' + data.stockName +'</td>');
-                var $unit = $('<td class="unit">' + data.unit +'</td>');
-                var $amount = $('<td class="amount">' + data.amount +'</td>');
+                var $id = $('<td class="stockId" style="display:none">' + data.id + '</td>');
+                var $typeId = $('<td class="typeId" style="display:none">' + data.typeId + '</td>');
+                var $stockName = $('<td class="stockName">' + data.stockName + '</td>');
+                var $typeName = $('<td class="typeName">' + data.typeName + '</td>');
+                var $unit = $('<td class="unit">' + data.unit + '</td>');
+                var $amount = $('<td class="amount">' + data.amount + '</td>');
                 var $operate = $(
                   '<td><button class="ui tiny orange button mod-stock">修改</button><button class="ui tiny red button del-stock">删除</button></td>'
                 )
                 $tr.append($id);
                 $tr.append($typeId);
                 $tr.append($stockName);
+                $tr.append($typeName);
                 $tr.append($unit);
                 $tr.append($amount);
                 $tr.append($operate);
@@ -352,9 +355,14 @@
           newAmount: {
             identifier: 'amount',
             rules: [{
-              type: 'empty',
-              prompt: '数量不能为空'
-            }]
+                type: 'empty',
+                prompt: '数量不能为空'
+              },
+              {
+                type: 'integer',
+                prompt: '请输入整数'
+              }
+            ]
           }
         },
         onSuccess: function (e) {
@@ -391,10 +399,8 @@
         $('#mod-stock-id').text($(this).parent().parent().find('.stockId').text());
         $('#mod-stock').find('input[name="stockName"]').val($(this).parent().parent().find('.stockName').text());
         $('.mod-stock-select select').val($(this).parent().parent().find('.typeId').text());
-        //根据typeId获取typeName
-        var defaultTypeName = $('.mod-stock-select select').find('option[value='+$('.mod-stock-select select').val()+']').text();
         $('.mod-stock-select .text').removeClass('default');
-        $('.mod-stock-select .text').text(defaultTypeName);
+        $('.mod-stock-select .text').text($(this).parent().parent().find('.typeName').text());
         $('#mod-stock').find('input[name="unit"]').val($(this).parent().parent().find('.unit').text());
         $('#mod-stock').find('input[name="amount"]').val($(this).parent().parent().find('.amount').text());
         $('.mod-stock-modal').modal({
@@ -440,9 +446,14 @@
           modAmount: {
             identifier: 'amount',
             rules: [{
-              type: 'empty',
-              prompt: '数量不能为空'
-            }]
+                type: 'empty',
+                prompt: '数量不能为空'
+              },
+              {
+                type: 'integer',
+                prompt: '请输入整数'
+              }
+            ]
           }
         },
         onSuccess: function (e) {
