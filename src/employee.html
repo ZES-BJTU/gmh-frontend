@@ -31,7 +31,7 @@
 
 <body>
   <button class="ui blue button fake-button" style="display:none;"></button>
-  <button class="ui blue button load-shop-list" style="display:none;"></button>
+  <button class="ui blue button load-employee-list" style="display:none;"></button>
   <div id="left-menu" class="ui left fixed vertical pointing menu">
     <a class="item" href="home.html">首页</a>
     <a class="item" href="reserve.html">预约管理</a>
@@ -64,16 +64,23 @@
     <div class="ui fluid container">
       <div class="ui grid">
         <div class="row">
-          <div class="four wide left floated left aligned column">
-            <button class="ui blue button new-shop">新建</button>
-          </div>
-          <div class="four wide right floated right aligned column">
-            <form id="" class="ui form search shop-search">
+          <div class="twelve wide left aligned column">
+            <form id="" class="ui form search employee-search">
               <div class="ui action input">
                 <input type="text" class="search-input" placeholder="请输入搜索内容">
+                <select class="ui selection dropdown employee-select">
+                  <option value="1">美甲师</option>
+                  <option value="2">美睫师</option>
+                  <option value="3">美容师</option>
+                  <option value="5">咨询师</option>
+                  <option value="4">经理</option>
+                </select>
                 <button class="ui button submit">搜索</button>
               </div>
             </form>
+          </div>
+          <div class="four wide right aligned column">
+            <button class="ui blue button new-employee">新建</button>
           </div>
         </div>
         <div class="one column row">
@@ -81,14 +88,15 @@
             <table class="ui compact table theme">
               <thead>
                 <tr>
-                  <th>店铺名</th>
-                  <th>负责人</th>
-                  <th>负责人电话</th>
-                  <th>地址</th>
+                  <th>员工姓名</th>
+                  <th>员工性别</th>
+                  <th>员工手机号</th>
+                  <th>所属门店</th>
+                  <th>所属工种</th>
                   <th>操作</th>
                 </tr>
               </thead>
-              <tbody id="shop-list">
+              <tbody id="employee-list">
               </tbody>
             </table>
           </div>
@@ -102,25 +110,49 @@
       </div>
     </div>
   </div>
-  <div class="ui mini modal new-shop-modal">
-    <div class="header">新建店铺</div>
+  <div class="ui mini modal new-employee-modal">
+    <div class="header">新建员工</div>
     <div class="content">
-      <form id="new-shop" class="ui form">
+      <form id="new-employee" class="ui form">
         <div class="field">
-          <label>店铺名</label>
-          <input type="text" name="shopName" placeholder="请输入店铺名">
+          <label>员工名称</label>
+          <input type="text" name="emName" placeholder="请输入员工名称">
         </div>
         <div class="field">
-          <label>负责人</label>
-          <input type="text" name="manager" placeholder="请输入负责人姓名">
+          <label>员工性别</label>
+          <select name="sex" class="ui fluid dropdown new-employee-gender-select">
+            <option value="">请选择员工性别</option>
+            <option value="1">男</option>
+            <option value="0">女</option>
+          </select>
         </div>
         <div class="field">
-          <label>负责人电话</label>
-          <input type="text" name="phone" placeholder="请输入负责人电话">
+          <label>员工手机号</label>
+          <input type="text" name="phone" placeholder="请输入员工手机号">
         </div>
-        <div class="field">
-          <label>地址</label>
-          <input type="text" name="address" placeholder="请输入地址">
+        <div class="field jobTypeList">
+          <label>所属工种</label>
+          <input type="text" id="jobId" name="jobId" value='1' hidden>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='1'>美甲师</label>
+          </div>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='2'>美睫师</label>
+          </div>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='3'>美容师</label>
+          </div>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='5'>咨询师</label>
+          </div>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='4'>经理</label>
+          </div>
         </div>
       </form>
     </div>
@@ -135,26 +167,28 @@
       </div>
     </div>
   </div>
-  <div class="ui mini modal mod-shop-modal">
-    <div class="header">修改店铺</div>
+  <div class="ui mini modal mod-stock-modal">
+    <div class="header">修改库存</div>
     <div class="content">
-      <span id="mod-shop-id" style="display:none"></span>
-      <form id="mod-shop" class="ui form">
+      <span id="mod-stock-id" style="display:none"></span>
+      <form id="mod-stock" class="ui form">
         <div class="field">
-          <label>店铺名</label>
-          <input type="text" name="shopName" placeholder="请输入店铺名">
+          <label>库存名</label>
+          <input type="text" name="stockName" placeholder="请输入库存名">
         </div>
         <div class="field">
-          <label>负责人</label>
-          <input type="text" name="manager" placeholder="请输入负责人姓名">
+          <label>库存分类</label>
+          <select name="typeId" class="ui fluid dropdown mod-stock-select">
+            <option value="">请选择库存分类</option>
+          </select>
         </div>
         <div class="field">
-          <label>负责人电话</label>
-          <input type="text" name="phone" placeholder="请输入负责人电话">
+          <label>单位</label>
+          <input type="text" name="unit" placeholder="请输入单位">
         </div>
         <div class="field">
-          <label>地址</label>
-          <input type="text" name="address" placeholder="请输入地址">
+          <label>数量</label>
+          <input type="text" name="amount" placeholder="请输入数量">
         </div>
       </form>
     </div>
@@ -169,12 +203,12 @@
       </div>
     </div>
   </div>
-  <div class="ui basic tiny modal del-shop-modal">
+  <div class="ui basic tiny modal del-stock-modal">
     <div class="ui icon header">
       <i class="trash icon"></i>确认删除？
     </div>
     <div class="content">
-      <span id="del-shop-id" style="display:none"></span>
+      <span id="del-stock-id" style="display:none"></span>
     </div>
     <div class="actions delete-action">
       <div class="ui black deny right labeled icon button">
@@ -190,30 +224,54 @@
   <script>
     // 存储搜索的信息,用于点击页码时调用
     var searchInfo = '';
+    var searchJobType = '';
+    var shopData = [];
     $(document).ready(function () {
-      //店铺管理搜索
-      $('.shop-search').form({
+      //加载店铺
+      $('.fake-button').api({
+        action: 'shop getAll',
+        method: 'GET',
+        on: 'now',
+        beforeXHR: function (xhr) {
+          verifyToken();
+          xhr.setRequestHeader('X-token', getCookie('token'));
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        },
+        onSuccess: function (response) {
+          if (response.error != null) {
+            alert(response.code + ' : ' + response.error);
+          } else {
+            shopData = response.data;
+          }
+        },
+        onFailure: function (response) {
+          alert('服务器暂无响应');
+        }
+      })
+      //库存管理搜索
+      $('.employee-search').form({
         onSuccess: function (e) {
           //阻止表单的提交
           e.preventDefault();
           searchInfo = $('.search-input').val();
-          loadSearchShopList(1, 10, 'search');
+          searchJobType = $('.employee-select select').val();
+          loadSearchEmployeeList(1, 10, 'search');
         }
       })
 
-      $('.shop-search').form('submit');
+      $('.employee-search').form('submit');
 
       //分页按钮点击事件
       $(document).on('click', '.paging .item', function () {
-        loadSearchShopList($(this).text(), 10, 'paging');
+        loadSearchEmployeeList($(this).text(), 10, 'paging');
       })
 
-      function loadSearchShopList(pagenum, pagesize, type) {
-        $('.load-shop-list').api({
-          action: 'shop search',
-          method: 'GET',
+      function loadSearchEmployeeList(pagenum, pagesize, type) {
+        $('.load-employee-list').api({
+          action: 'employee search',
+          method: 'POST',
           serializeForm: true,
-          on:'now',
+          on: 'now',
           data: {
             pageNum: pagenum,
             pageSize: pagesize
@@ -226,9 +284,11 @@
           beforeSend: function (settings) {
             if (type == 'search') {
               settings.data.searchString = $('.search-input').val();
+              // settings.data.jobType = $('.employee-select select').val();
               return settings;
             } else {
               settings.data.searchString = searchInfo;
+              // settings.data.jobType = searchJobType;
               return settings;
             }
           },
@@ -236,7 +296,7 @@
             if (response.error != null) {
               alert(response.code + ' : ' + response.error);
             } else {
-              $('#shop-list').empty();
+              $('#employee-list').empty();
               $('.paging').empty();
               for (var i = 0; i < response.data.totalPages; i++) {
                 var $item = $('<a class="item">' + (i + 1) + '</a>');
@@ -244,21 +304,40 @@
               }
               $.each(response.data.data, function (i, data) {
                 var $tr = $('<tr></tr>');
-                var $id = $('<td class="shopId" style="display:none">' + data.id + '</td>');
+                var $id = $('<td class="employeeId" style="display:none">' + data.id + '</td>');
+                var $employeeName = $('<td class="employeeName">' + data.emName + '</td>');
+                var $sexId = $('<td class="employeeSexId" style="display:none">' + (data.sex == '男' ? 1 :
+                  2) + '</td>');
+                var $sex = $('<td class="employeeSex">' + data.sex + '</td>');
+                var $phone = $('<td class="employeePhone">' + data.phone + '</td>');
+                var $shopId = $('<td class="shopId" style="display:none">' + data.shopId + '</td>');
                 var $shopName = $('<td class="shopName">' + data.shopName + '</td>');
-                var $manager = $('<td class="shopManager">' + data.manager + '</td>');
-                var $phone = $('<td class="shopPhone">' + data.phone + '</td>');
-                var $address = $('<td class="shopAddress">' + data.address + '</td>');
+                var jobVos = [];
+                var jobName = '';
+                $.each(data.jobVos, function (i, data) {
+                  jobVos.push(data.jobType);
+                  if (jobName == '') {
+                    jobName += data.jobName;
+                  } else {
+                    jobName += ',' + data.jobName
+                  }
+                })
+                var $jobType = $('<td class="jobType" style="display:none">' + jobVos + '</td>');
+                var $jobName = $('<td class="jobName">' + jobName + '</td>');
                 var $operate = $(
-                  '<td><button class="ui tiny orange button mod-shop">修改</button><button class="ui tiny red button del-shop">删除</button></td>'
+                  '<td><button class="ui tiny orange button mod-employee">修改</button><button class="ui tiny red button del-employee">离职</button></td>'
                 )
                 $tr.append($id);
-                $tr.append($shopName);
-                $tr.append($manager);
+                $tr.append($employeeName);
+                $tr.append($sexId);
+                $tr.append($sex);
                 $tr.append($phone);
-                $tr.append($address);
+                $tr.append($shopId);
+                $tr.append($shopName);
+                $tr.append($jobType);
+                $tr.append($jobName);
                 $tr.append($operate);
-                $('#shop-list').append($tr);
+                $('#employee-list').append($tr);
               })
               $('.paging').children().eq(pagenum - 1).addClass('active');
             }
@@ -269,78 +348,82 @@
         })
       }
 
-      //新建店铺模态框
-      $('.new-shop').on('click', function () {
-        $('.new-shop-modal').modal({
+      //新建库存模态框
+      $('.new-employee').on('click', function () {
+        $('.new-employee-modal').modal({
             closable: false,
             onDeny: function () {
-              $('#new-shop').form('clear');
+              $('#new-employee').form('clear');
             },
             onApprove: function () {
-              $('#new-shop').submit();
+              $('#new-employee').submit();
               return false;
             }
           })
           .modal('show');
       })
-      //新建店铺信息提交
-      $('#new-shop').form({
+      //新建库存信息提交
+      $('#new-employee').form({
         on: 'change',
         inline: true,
         fields: {
-          newShopName: {
-            identifier: 'shopName',
+          newEmName: {
+            identifier: 'emName',
             rules: [{
               type: 'empty',
-              prompt: '店铺名不能为空'
+              prompt: '员工姓名不能为空'
             }]
           },
-          newShopManager: {
-            identifier: 'manager',
-            rules: [{
-              type: 'empty',
-              prompt: '负责人不能为空'
-            }]
-          },
-          newShopPhone: {
+          newPhone: {
             identifier: 'phone',
             rules: [{
-                type: 'empty',
-                prompt: '电话不能为空'
-              },
-              {
-                type: 'number',
-                prompt: '请输入有效的电话'
-              }
-            ]
-          },
-          newShopAddress: {
-            identifier: 'address',
-            rules: [{
               type: 'empty',
-              prompt: '地址不能为空'
+              prompt: '员工手机号不能为空'
+            }, {
+              type: 'number',
+              prompt: '请输入正确的手机号'
             }]
           },
+          newJobId: {
+            identifier: 'jobId',
+            rules: [{
+              type: 'empty',
+              prompt: '所属工种不能为空'
+            }]
+          }
         },
         onSuccess: function (e) {
           //阻止表单的提交
           e.preventDefault();
         }
       }).api({
-        action: 'shop insert',
+        action: 'employee insert',
         method: 'POST',
         serializeForm: true,
         beforeXHR: function (xhr) {
           verifyToken();
           xhr.setRequestHeader('X-token', getCookie('token'));
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        },
+        beforeSend: function (settings) {
+          var $checkbox = $('.jobTypeList').find('.checkbox');
+          var checkData = [];
+          $checkbox.each(function(){
+            if($(this).checkbox('is checked')){
+              checkData.push(Number($(this).find('label').attr('data-id')));
+            }
+          })
+          settings.data.jobId = checkData;
+          return settings;
+          
         },
         onSuccess: function (response) {
           if (response.error != null) {
             alert(response.code + ' : ' + response.error);
           } else {
-            $('#new-shop').form('clear');
-            $('.new-shop-modal').modal('hide');
-            loadSearchShopList(1, 10,'search');
+            $('#new-employee').form('clear');
+            $('.new-employee-modal').modal('hide');
+            loadSearchEmployeeList(1, 10, 'search');
           }
         },
         onFailure: function (response) {
@@ -348,80 +431,85 @@
         },
       });
 
-      //修改店铺模态框
-      $(document).on('click', '.mod-shop', function () {
-        $('#mod-shop-id').text($(this).parent().parent().find('.shopId').text())
-        $('#mod-shop').find('input[name="shopName"]').val($(this).parent().parent().find('.shopName').text());
-        $('#mod-shop').find('input[name="manager"]').val($(this).parent().parent().find('.shopManager').text());
-        $('#mod-shop').find('input[name="phone"]').val($(this).parent().parent().find('.shopPhone').text());
-        $('#mod-shop').find('input[name="address"]').val($(this).parent().parent().find('.shopAddress').text());
-        $('.mod-shop-modal').modal({
+      //修改库存模态框
+      $(document).on('click', '.mod-stock', function () {
+        loadStockTypeData();
+        $('#mod-stock-id').text($(this).parent().parent().find('.stockId').text());
+        $('#mod-stock').find('input[name="stockName"]').val($(this).parent().parent().find('.stockName').text());
+        $('.mod-stock-select select').val($(this).parent().parent().find('.typeId').text());
+        $('.mod-stock-select .text').removeClass('default');
+        $('.mod-stock-select .text').text($(this).parent().parent().find('.typeName').text());
+        $('#mod-stock').find('input[name="unit"]').val($(this).parent().parent().find('.unit').text());
+        $('#mod-stock').find('input[name="amount"]').val($(this).parent().parent().find('.amount').text());
+        $('.mod-stock-modal').modal({
             closable: false,
             onDeny: function () {
-              $('#mod-shop').form('clear');
-              $('#mod-shop-id').text('');
+              clearStockSelect();
+              $('#mod-stock').form('clear');
+              $('#mod-stock-id').text('');
             },
             onApprove: function () {
-              $('#mod-shop').submit();
+              $('#mod-stock').submit();
               return false;
             }
           })
           .modal('show');
       })
-      //修改店铺信息提交
-      $('#mod-shop').form({
+      //修改库存信息提交
+      $('#mod-stock').form({
         on: 'change',
         inline: true,
         fields: {
-          modShopName: {
-            identifier: 'shopName',
+          modStockName: {
+            identifier: 'stockName',
             rules: [{
               type: 'empty',
-              prompt: '店铺名不能为空'
+              prompt: '库存名不能为空'
             }]
           },
-          modShopManager: {
-            identifier: 'manager',
+          modTypeId: {
+            identifier: 'typeId',
             rules: [{
               type: 'empty',
-              prompt: '负责人不能为空'
+              prompt: '库存类型不能为空'
             }]
           },
-          modShopPhone: {
-            identifier: 'phone',
+          modUnit: {
+            identifier: 'unit',
+            rules: [{
+              type: 'empty',
+              prompt: '单位不能为空'
+            }]
+          },
+          modAmount: {
+            identifier: 'amount',
             rules: [{
                 type: 'empty',
-                prompt: '电话不能为空'
+                prompt: '数量不能为空'
               },
               {
-                type: 'number',
-                prompt: '请输入有效的电话'
+                type: 'integer',
+                prompt: '请输入整数'
               }
             ]
-          },
-          modShopAddress: {
-            identifier: 'address',
-            rules: [{
-              type: 'empty',
-              prompt: '地址不能为空'
-            }]
-          },
+          }
         },
         onSuccess: function (e) {
           //阻止表单的提交
           e.preventDefault();
         }
       }).api({
-        action: 'shop update',
+        action: 'stock update',
         method: 'POST',
         serializeForm: true,
         beforeXHR: function (xhr) {
           verifyToken();
           xhr.setRequestHeader('X-token', getCookie('token'));
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         },
         beforeSend: function (settings) {
-          if ($('#mod-shop-id').text() != '') {
-            settings.data.id = $('#mod-shop-id').text();
+          if ($('#mod-stock-id').text() != '') {
+            settings.data.id = $('#mod-stock-id').text();
             return settings;
           } else {
             alert('ID为空');
@@ -432,10 +520,11 @@
           if (response.error != null) {
             alert(response.code + ' : ' + response.error);
           } else {
-            $('#mod-shop-id').text('');
-            $('#mod-shop').form('clear');
-            $('.mod-shop-modal').modal('hide');
-            loadSearchShopList(1, 10,'search');
+            $('#mod-stock-id').text('');
+            clearStockSelect();
+            $('#mod-stock').form('clear');
+            $('.mod-stock-modal').modal('hide');
+            loadSearchStockList(1, 10, 'search');
           }
         },
         onFailure: function (response) {
@@ -443,26 +532,27 @@
         }
       });
 
-      //删除店铺模态框
-      $(document).on('click', '.del-shop', function () {
-        $('#del-shop-id').text($(this).parent().parent().find('.shopId').text())
-        $('.del-shop-modal').modal({
+      //删除库存模态框
+      $(document).on('click', '.del-stock', function () {
+        $('#del-stock-id').text($(this).parent().parent().find('.stockId').text())
+        $('.del-stock-modal').modal({
             closable: false,
             onDeny: function () {
-              $('#del-shop-id').text('');
+              $('#del-stock-id').text('');
             },
             onApprove: function () {
               $('.fake-button').api({
-                action: 'shop delByIds',
+                action: 'stock delete',
                 method: 'POST',
                 on: 'now',
                 beforeXHR: function (xhr) {
                   verifyToken();
                   xhr.setRequestHeader('X-token', getCookie('token'));
+                  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 },
                 beforeSend: function (settings) {
-                  if ($('#del-shop-id').text() != '') {
-                    settings.data.id = $('#del-shop-id').text();
+                  if ($('#del-stock-id').text() != '') {
+                    settings.data.id = $('#del-stock-id').text();
                     return settings;
                   } else {
                     alert('ID为空');
@@ -473,9 +563,9 @@
                   if (response.error != null) {
                     alert(response.code + ' : ' + response.error);
                   } else {
-                    $('#del-shop-id').text('');
-                    $('.del-shop-modal').modal('hide');
-                    loadSearchShopList(1, 10,'search');
+                    $('#del-stock-id').text('');
+                    $('.del-stock-modal').modal('hide');
+                    loadSearchStockList(1, 10, 'search');
                   }
                 },
                 onFailure: function (response) {
@@ -487,6 +577,29 @@
           })
           .modal('show');
       })
+      $('.new-employee-modal .ui.checkbox').checkbox({
+        // Fire on load to set parent value
+        fireOnInit: true,
+        // Change parent state on each child checkbox change
+        onChange: function () {
+          var allChecked = true,
+            allUnchecked = true;
+          var $checkbox = $('.jobTypeList').find('.checkbox');
+          // check to see if all other siblings are checked or unchecked
+          $checkbox.each(function () {
+            if ($(this).checkbox('is checked')) {
+              allUnchecked = false;
+            } else {
+              allChecked = false;
+            }
+          });
+          if (allUnchecked) {
+            $('#jobId').val('');
+          } else {
+            $('#jobId').val('1');
+          }
+        }
+      });
     })
   </script>
 </body>
