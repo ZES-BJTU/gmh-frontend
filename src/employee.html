@@ -20,12 +20,15 @@
   <script src="css/semantic-ui/semantic.js"></script>
 
   <!--Style-->
+  <link href="js/bootstrap-datetimepicker-master/datetimepicker.css" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 
   <!--Script-->
   <script src="js/action.js"></script>
   <script src="js/tools.js"></script>
   <script src="js/echarts.js"></script>
+  <script src="js/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
+  <script src="js/bootstrap-datetimepicker-master/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
   <script src="js/script.js"></script>
 </head>
 
@@ -69,6 +72,7 @@
               <div class="ui action input">
                 <input type="text" class="search-input" placeholder="请输入搜索内容">
                 <select class="ui selection dropdown employee-select">
+                  <option value="0">全部工种</option>
                   <option value="1">美甲师</option>
                   <option value="2">美睫师</option>
                   <option value="3">美容师</option>
@@ -91,7 +95,7 @@
                   <th>员工姓名</th>
                   <th>员工性别</th>
                   <th>员工手机号</th>
-                  <th>所属门店</th>
+                  <th>入职日期</th>
                   <th>所属工种</th>
                   <th>操作</th>
                 </tr>
@@ -130,9 +134,14 @@
           <label>员工手机号</label>
           <input type="text" name="phone" placeholder="请输入员工手机号">
         </div>
-        <div class="field jobTypeList">
+        <div class="field">
+          <label>入职时间</label>
+          <input type="text" name="entryDate" value="" id="calendar" placeholder="请输入员工入职时间">
+        </div>
+        
+        <div class="field newJobTypeList">
           <label>所属工种</label>
-          <input type="text" id="jobId" name="jobId" value='1' hidden>
+          <input type="text" id="newJobId" name="jobId" value='1' hidden>
           <div class="ui checkbox">
             <input type="checkbox">
             <label data-id='1'>美甲师</label>
@@ -167,28 +176,55 @@
       </div>
     </div>
   </div>
-  <div class="ui mini modal mod-stock-modal">
-    <div class="header">修改库存</div>
+  <div class="ui mini modal mod-employee-modal">
+    <div class="header">修改员工</div>
     <div class="content">
-      <span id="mod-stock-id" style="display:none"></span>
-      <form id="mod-stock" class="ui form">
+      <span id="mod-employee-id" style="display:none"></span>
+      <form id="mod-employee" class="ui form">
         <div class="field">
-          <label>库存名</label>
-          <input type="text" name="stockName" placeholder="请输入库存名">
+          <label>员工名称</label>
+          <input type="text" name="emName" placeholder="请输入员工名称">
         </div>
         <div class="field">
-          <label>库存分类</label>
-          <select name="typeId" class="ui fluid dropdown mod-stock-select">
-            <option value="">请选择库存分类</option>
+          <label>员工性别</label>
+          <select name="sex" class="ui fluid dropdown mod-employee-gender-select" disabled="">
+            <option value="">请选择员工性别</option>
+            <option value="1">男</option>
+            <option value="0">女</option>
           </select>
         </div>
         <div class="field">
-          <label>单位</label>
-          <input type="text" name="unit" placeholder="请输入单位">
+          <label>员工手机号</label>
+          <input type="text" name="phone" placeholder="请输入员工手机号">
         </div>
         <div class="field">
-          <label>数量</label>
-          <input type="text" name="amount" placeholder="请输入数量">
+          <label>入职时间</label>
+          <input type="text" id="modEntryDate" name="entryDate" value="" placeholder="请输入员工入职时间" disabled="">
+        </div>
+        
+        <div class="field modJobTypeList">
+          <label>所属工种</label>
+          <input type="text" id="modJobId" name="jobId" value='1' hidden>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='1'>美甲师</label>
+          </div>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='2'>美睫师</label>
+          </div>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='3'>美容师</label>
+          </div>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='5'>咨询师</label>
+          </div>
+          <div class="ui checkbox">
+            <input type="checkbox">
+            <label data-id='4'>经理</label>
+          </div>
         </div>
       </form>
     </div>
@@ -222,9 +258,22 @@
     </div>
   </div>
   <script>
+    $('#calendar').datetimepicker({
+      language:  'zh-CN',
+      weekStart: 1,
+      todayBtn:  1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      forceParse: 0,
+      showMeridian: 1
+    }).on('changeDate', function(ev){
+        $('#calendar').focus();
+        $('#calendar').blur();
+    });
     // 存储搜索的信息,用于点击页码时调用
     var searchInfo = '';
-    var searchJobType = '';
+    var searchJobId = '';
     var shopData = [];
     $(document).ready(function () {
       //加载店铺
@@ -248,13 +297,13 @@
           alert('服务器暂无响应');
         }
       })
-      //库存管理搜索
+      //员工管理搜索
       $('.employee-search').form({
         onSuccess: function (e) {
           //阻止表单的提交
           e.preventDefault();
           searchInfo = $('.search-input').val();
-          searchJobType = $('.employee-select select').val();
+          searchJobId = $('.employee-select select').val();
           loadSearchEmployeeList(1, 10, 'search');
         }
       })
@@ -284,11 +333,11 @@
           beforeSend: function (settings) {
             if (type == 'search') {
               settings.data.searchString = $('.search-input').val();
-              // settings.data.jobType = $('.employee-select select').val();
+              settings.data.jobId = $('.employee-select select').val();
               return settings;
             } else {
               settings.data.searchString = searchInfo;
-              // settings.data.jobType = searchJobType;
+              settings.data.jobId = searchJobId;
               return settings;
             }
           },
@@ -306,12 +355,10 @@
                 var $tr = $('<tr></tr>');
                 var $id = $('<td class="employeeId" style="display:none">' + data.id + '</td>');
                 var $employeeName = $('<td class="employeeName">' + data.emName + '</td>');
-                var $sexId = $('<td class="employeeSexId" style="display:none">' + (data.sex == '男' ? 1 :
-                  2) + '</td>');
+                var $sexId = $('<td class="employeeSexId" style="display:none">' + (data.sex == '男' ? 1 : 2) + '</td>');
                 var $sex = $('<td class="employeeSex">' + data.sex + '</td>');
                 var $phone = $('<td class="employeePhone">' + data.phone + '</td>');
-                var $shopId = $('<td class="shopId" style="display:none">' + data.shopId + '</td>');
-                var $shopName = $('<td class="shopName">' + data.shopName + '</td>');
+                var $employeeEntryDate = $('<td class="employeeEntryDate">' + toDatetime(data.entryDate) + '</td>');
                 var jobVos = [];
                 var jobName = '';
                 $.each(data.jobVos, function (i, data) {
@@ -332,8 +379,7 @@
                 $tr.append($sexId);
                 $tr.append($sex);
                 $tr.append($phone);
-                $tr.append($shopId);
-                $tr.append($shopName);
+                $tr.append($employeeEntryDate);
                 $tr.append($jobType);
                 $tr.append($jobName);
                 $tr.append($operate);
@@ -382,6 +428,16 @@
             }, {
               type: 'number',
               prompt: '请输入正确的手机号'
+            },{
+              type: 'exactLength[11]',
+              prompt: '请输入11位手机号'
+            }]
+          },
+          newEntryDate: {
+            identifier: 'entryDate',
+            rules: [{
+              type: 'empty',
+              prompt: '员工入职时间不能为空'
             }]
           },
           newJobId: {
@@ -400,13 +456,14 @@
         action: 'employee insert',
         method: 'POST',
         serializeForm: true,
+        traditional: true,//使用传统方式序列化，保证数组传递
         beforeXHR: function (xhr) {
           verifyToken();
           xhr.setRequestHeader('X-token', getCookie('token'));
           xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         },
         beforeSend: function (settings) {
-          var $checkbox = $('.jobTypeList').find('.checkbox');
+          var $checkbox = $('.newJobTypeList').find('.checkbox');
           var checkData = [];
           $checkbox.each(function(){
             if($(this).checkbox('is checked')){
@@ -414,8 +471,8 @@
             }
           })
           settings.data.jobId = checkData;
+          settings.data.entryDate = toTimeStamp($('#calendar').val());
           return settings;
-          
         },
         onSuccess: function (response) {
           if (response.error != null) {
@@ -432,66 +489,70 @@
       });
 
       //修改库存模态框
-      $(document).on('click', '.mod-stock', function () {
-        loadStockTypeData();
-        $('#mod-stock-id').text($(this).parent().parent().find('.stockId').text());
-        $('#mod-stock').find('input[name="stockName"]').val($(this).parent().parent().find('.stockName').text());
-        $('.mod-stock-select select').val($(this).parent().parent().find('.typeId').text());
-        $('.mod-stock-select .text').removeClass('default');
-        $('.mod-stock-select .text').text($(this).parent().parent().find('.typeName').text());
-        $('#mod-stock').find('input[name="unit"]').val($(this).parent().parent().find('.unit').text());
-        $('#mod-stock').find('input[name="amount"]').val($(this).parent().parent().find('.amount').text());
-        $('.mod-stock-modal').modal({
+      $(document).on('click', '.mod-employee', function () {
+        $('#mod-employee-id').text($(this).parent().parent().find('.employeeId').text());
+        $('#mod-employee').find('input[name="emName"]').val($(this).parent().parent().find('.employeeName').text());
+        $('.mod-employee-gender-select select').val($(this).parent().parent().find('.employeeSexId').text());
+        $('.mod-employee-gender-select .text').removeClass('default');
+        $('.mod-employee-gender-select .text').text($(this).parent().parent().find('.employeeSex').text());
+        $('#mod-employee').find('input[name="phone"]').val($(this).parent().parent().find('.employeePhone').text());
+        $('#mod-employee').find('input[name="entryDate"]').val($(this).parent().parent().find('.employeeEntryDate').text());
+        var jobType = $(this).parent().parent().find('.jobType').text();
+        jobType = jobType.split(',');
+        for(var i = 0; i<jobType.length;i++){
+          $('.modJobTypeList').find('label[data-id='+jobType[i]+']').parent().checkbox('check');
+        }
+        $('.mod-employee-modal').modal({
             closable: false,
             onDeny: function () {
-              clearStockSelect();
-              $('#mod-stock').form('clear');
-              $('#mod-stock-id').text('');
+              $('#mod-employee').form('clear');
+              $('#mod-employee-id').text('');
             },
             onApprove: function () {
-              $('#mod-stock').submit();
+              $('#mod-employee').submit();
               return false;
             }
           })
           .modal('show');
       })
       //修改库存信息提交
-      $('#mod-stock').form({
+      $('#mod-employee').form({
         on: 'change',
         inline: true,
         fields: {
-          modStockName: {
-            identifier: 'stockName',
+          modEmName: {
+            identifier: 'emName',
             rules: [{
               type: 'empty',
-              prompt: '库存名不能为空'
+              prompt: '员工姓名不能为空'
             }]
           },
-          modTypeId: {
-            identifier: 'typeId',
+          modPhone: {
+            identifier: 'phone',
             rules: [{
               type: 'empty',
-              prompt: '库存类型不能为空'
+              prompt: '员工手机号不能为空'
+            }, {
+              type: 'number',
+              prompt: '请输入正确的手机号'
+            },{
+              type: 'exactLength[11]',
+              prompt: '请输入11位手机号'
             }]
           },
-          modUnit: {
-            identifier: 'unit',
+          modEntryDate: {
+            identifier: 'entryDate',
             rules: [{
               type: 'empty',
-              prompt: '单位不能为空'
+              prompt: '员工入职时间不能为空'
             }]
           },
-          modAmount: {
-            identifier: 'amount',
+          modJobId: {
+            identifier: 'jobId',
             rules: [{
-                type: 'empty',
-                prompt: '数量不能为空'
-              },
-              {
-                type: 'integer',
-                prompt: '请输入整数'
-              }
-            ]
+              type: 'empty',
+              prompt: '所属工种不能为空'
+            }]
           }
         },
         onSuccess: function (e) {
@@ -499,31 +560,41 @@
           e.preventDefault();
         }
       }).api({
-        action: 'stock update',
+        action: 'employee update',
         method: 'POST',
         serializeForm: true,
+        traditional: true,//使用传统方式序列化，保证数组传递
         beforeXHR: function (xhr) {
           verifyToken();
           xhr.setRequestHeader('X-token', getCookie('token'));
           xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         },
         beforeSend: function (settings) {
-          if ($('#mod-stock-id').text() != '') {
-            settings.data.id = $('#mod-stock-id').text();
+          if ($('#mod-employee-id').text() != '') {
+            settings.data.id = $('#mod-employee-id').text();
             return settings;
           } else {
             alert('ID为空');
             return false;
           }
+          var $checkbox = $('.modJobTypeList').find('.checkbox');
+          var checkData = [];
+          $checkbox.each(function(){
+            if($(this).checkbox('is checked')){
+              checkData.push(Number($(this).find('label').attr('data-id')));
+            }
+          })
+          settings.data.jobId = checkData;
+          settings.data.entryDate = toTimeStamp($('#modEntryDate').val());
+          return settings;
         },
         onSuccess: function (response) {
           if (response.error != null) {
             alert(response.code + ' : ' + response.error);
           } else {
-            $('#mod-stock-id').text('');
-            clearStockSelect();
-            $('#mod-stock').form('clear');
-            $('.mod-stock-modal').modal('hide');
+            $('#mod-employee-id').text('');
+            $('#mod-employee').form('clear');
+            $('.mod-employee-modal').modal('hide');
             loadSearchStockList(1, 10, 'search');
           }
         },
@@ -533,16 +604,16 @@
       });
 
       //删除库存模态框
-      $(document).on('click', '.del-stock', function () {
-        $('#del-stock-id').text($(this).parent().parent().find('.stockId').text())
-        $('.del-stock-modal').modal({
+      $(document).on('click', '.del-employee', function () {
+        $('#del-employee-id').text($(this).parent().parent().find('.employeeId').text())
+        $('.del-employee-modal').modal({
             closable: false,
             onDeny: function () {
-              $('#del-stock-id').text('');
+              $('#del-employee-id').text('');
             },
             onApprove: function () {
               $('.fake-button').api({
-                action: 'stock delete',
+                action: 'employee delete',
                 method: 'POST',
                 on: 'now',
                 beforeXHR: function (xhr) {
@@ -551,8 +622,8 @@
                   xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 },
                 beforeSend: function (settings) {
-                  if ($('#del-stock-id').text() != '') {
-                    settings.data.id = $('#del-stock-id').text();
+                  if ($('#del-employee-id').text() != '') {
+                    settings.data.id = $('#del-employee-id').text();
                     return settings;
                   } else {
                     alert('ID为空');
@@ -563,8 +634,8 @@
                   if (response.error != null) {
                     alert(response.code + ' : ' + response.error);
                   } else {
-                    $('#del-stock-id').text('');
-                    $('.del-stock-modal').modal('hide');
+                    $('#del-employee-id').text('');
+                    $('.del-employee-modal').modal('hide');
                     loadSearchStockList(1, 10, 'search');
                   }
                 },
@@ -584,7 +655,7 @@
         onChange: function () {
           var allChecked = true,
             allUnchecked = true;
-          var $checkbox = $('.jobTypeList').find('.checkbox');
+          var $checkbox = $('.newJobTypeList').find('.checkbox');
           // check to see if all other siblings are checked or unchecked
           $checkbox.each(function () {
             if ($(this).checkbox('is checked')) {
@@ -594,9 +665,32 @@
             }
           });
           if (allUnchecked) {
-            $('#jobId').val('');
+            $('#newJobId').val('');
           } else {
-            $('#jobId').val('1');
+            $('#newJobId').val('1');
+          }
+        }
+      });
+      $('.mod-employee-modal .ui.checkbox').checkbox({
+        // Fire on load to set parent value
+        fireOnInit: true,
+        // Change parent state on each child checkbox change
+        onChange: function () {
+          var allChecked = true,
+            allUnchecked = true;
+          var $checkbox = $('.modJobTypeList').find('.checkbox');
+          // check to see if all other siblings are checked or unchecked
+          $checkbox.each(function () {
+            if ($(this).checkbox('is checked')) {
+              allUnchecked = false;
+            } else {
+              allChecked = false;
+            }
+          });
+          if (allUnchecked) {
+            $('#modJobId').val('');
+          } else {
+            $('#modJobId').val('1');
           }
         }
       });
