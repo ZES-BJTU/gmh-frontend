@@ -136,7 +136,7 @@
         </div>
         <div class="field">
           <label>入职时间</label>
-          <input type="text" name="entryDate" value="" id="calendar" placeholder="请输入员工入职时间">
+          <input type="text" name="entryDate" value="" id="entryDate" placeholder="请输入员工入职时间">
         </div>
         
         <div class="field newJobTypeList">
@@ -201,7 +201,6 @@
           <label>入职时间</label>
           <input type="text" id="modEntryDate" name="entryDate" value="" placeholder="请输入员工入职时间" disabled="">
         </div>
-        
         <div class="field modJobTypeList">
           <label>所属工种</label>
           <input type="text" id="modJobId" name="jobId" value='1' hidden>
@@ -239,12 +238,12 @@
       </div>
     </div>
   </div>
-  <div class="ui basic tiny modal del-stock-modal">
+  <div class="ui basic tiny modal del-employee-modal">
     <div class="ui icon header">
-      <i class="trash icon"></i>确认删除？
+      <i class="trash icon"></i>确认离职？
     </div>
     <div class="content">
-      <span id="del-stock-id" style="display:none"></span>
+      <span id="del-employee-id" style="display:none"></span>
     </div>
     <div class="actions delete-action">
       <div class="ui black deny right labeled icon button">
@@ -258,7 +257,7 @@
     </div>
   </div>
   <script>
-    $('#calendar').datetimepicker({
+    $('#entryDate').datetimepicker({
       language:  'zh-CN',
       weekStart: 1,
       todayBtn:  1,
@@ -268,8 +267,8 @@
       forceParse: 0,
       showMeridian: 1
     }).on('changeDate', function(ev){
-        $('#calendar').focus();
-        $('#calendar').blur();
+        $('#entryDate').focus();
+        $('#entryDate').blur();
     });
     // 存储搜索的信息,用于点击页码时调用
     var searchInfo = '';
@@ -420,6 +419,13 @@
               prompt: '员工姓名不能为空'
             }]
           },
+          newSex: {
+            identifier: 'sex',
+            rules: [{
+              type: 'empty',
+              prompt: '员工性别不能为空'
+            }]
+          },
           newPhone: {
             identifier: 'phone',
             rules: [{
@@ -471,7 +477,7 @@
             }
           })
           settings.data.jobId = checkData;
-          settings.data.entryDate = toTimeStamp($('#calendar').val());
+          settings.data.entryDate = toTimeStamp($('#entryDate').val());
           return settings;
         },
         onSuccess: function (response) {
@@ -488,7 +494,7 @@
         },
       });
 
-      //修改库存模态框
+      //修改员工模态框
       $(document).on('click', '.mod-employee', function () {
         $('#mod-employee-id').text($(this).parent().parent().find('.employeeId').text());
         $('#mod-employee').find('input[name="emName"]').val($(this).parent().parent().find('.employeeName').text());
@@ -525,6 +531,13 @@
             rules: [{
               type: 'empty',
               prompt: '员工姓名不能为空'
+            }]
+          },
+          modSex: {
+            identifier: 'sex',
+            rules: [{
+              type: 'empty',
+              prompt: '员工性别不能为空'
             }]
           },
           modPhone: {
@@ -613,7 +626,7 @@
             },
             onApprove: function () {
               $('.fake-button').api({
-                action: 'employee delete',
+                action: 'employee leave',
                 method: 'POST',
                 on: 'now',
                 beforeXHR: function (xhr) {
@@ -636,7 +649,7 @@
                   } else {
                     $('#del-employee-id').text('');
                     $('.del-employee-modal').modal('hide');
-                    loadSearchStockList(1, 10, 'search');
+                    loadSearchEmployeeList(1, 10, 'search');
                   }
                 },
                 onFailure: function (response) {
