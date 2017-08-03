@@ -31,7 +31,7 @@ $.fn.api.settings.api = {
   'employee leave' : url+'/employee/leave',
   'projectType listTops' : url+'/projectType/listTops',
   'projectType search' : url+'/projectType/search',
-  'projectType insert' : url+'projectType/insert',
+  'projectType insert' : url+'/projectType/insert',
   'projectType update' : url+'/projectType/update',
   'projectType delete' : url+'/projectType/delete',
 };

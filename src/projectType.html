@@ -69,7 +69,7 @@
               <div class="ui action input">
                 <input type="text" class="search-input" placeholder="请输入搜索内容">
                 <select class="ui selection dropdown top-type-select">
-                  <option value="0">全部分类</option>
+                  <option value="0">全部顶级分类</option>
                   <option value="1">美甲</option>
                   <option value="2">美睫</option>
                   <option value="3">美容</option>
@@ -80,7 +80,7 @@
             </form>
           </div>
           <div class="four wide right aligned column">
-            <button class="ui blue button new-stock">新建</button>
+            <button class="ui blue button new-project-type">新建</button>
           </div>
         </div>
         <div class="one column row">
@@ -93,7 +93,7 @@
                   <th>操作</th>
                 </tr>
               </thead>
-              <tbody id="stock-list">
+              <tbody id="project-type-list">
               </tbody>
             </table>
           </div>
@@ -119,6 +119,10 @@
           <label>顶层分类</label>
           <select name="topType" class="ui fluid dropdown new-project-type-select">
             <option value="">请选择顶层分类</option>
+            <option value="1">美甲</option>
+            <option value="2">美睫</option>
+            <option value="3">美容</option>
+            <option value="4">产品</option>
           </select>
         </div>
       </form>
@@ -145,8 +149,12 @@
         </div>
         <div class="field">
           <label>顶层分类</label>
-          <select name="topType" class="ui fluid dropdown new-project-type-select">
+          <select name="topType" class="ui fluid dropdown mod-project-type-select">
             <option value="">请选择顶层分类</option>
+            <option value="1">美甲</option>
+            <option value="2">美睫</option>
+            <option value="3">美容</option>
+            <option value="4">产品</option>
           </select>
         </div>
       </form>
@@ -242,17 +250,17 @@
               }
               $.each(response.data.data, function (i, data) {
                 var $tr = $('<tr></tr>');
-                var $id = $('<td class="peojectTypeId" style="display:none">' + data.id + '</td>');
+                var $id = $('<td class="projectTypeId" style="display:none">' + data.id + '</td>');
                 var $projectTypeName = $('<td class="projectTypeName">' + data.typeName + '</td>');
-                var $topTypeId = $('<td class="topTypeId">' + data.topType + '</td>');
-                // var $topTypeName = $('<td class="topTypeName">' + data.topTypeName + '</td>');
+                var $topTypeId = $('<td class="topTypeId" style="display:none">' + data.topType + '</td>');
+                var $topTypeName = $('<td class="topTypeName">' + data.topTypeName + '</td>');
                 var $operate = $(
                   '<td><button class="ui tiny orange button mod-project-type">修改</button><button class="ui tiny red button del-project-type">删除</button></td>'
                 )
                 $tr.append($id);
                 $tr.append($projectTypeName);
                 $tr.append($topTypeId);
-                // $tr.append($topTypeName);
+                $tr.append($topTypeName);
                 $tr.append($operate);
                 $('#project-type-list').append($tr);
               })
@@ -270,7 +278,6 @@
         $('.new-project-type-modal').modal({
             closable: false,
             onDeny: function () {
-              clearStockSelect();
               $('#new-project-type').form('clear');
             },
             onApprove: function () {
@@ -334,10 +341,9 @@
         $('.mod-project-type-select select').val($(this).parent().parent().find('.topTypeId').text());
         $('.mod-project-type-select .text').removeClass('default');
         $('.mod-project-type-select .text').text($(this).parent().parent().find('.topTypeName').text());
-        $('.mod-project-type-select-modal').modal({
+        $('.mod-project-type-modal').modal({
             closable: false,
             onDeny: function () {
-              clearStockSelect();
               $('#mod-project-type').form('clear');
               $('#mod-project-type-id').text('');
             },
@@ -395,7 +401,6 @@
             alert(response.code + ' : ' + response.error);
           } else {
             $('#mod-project-type-id').text('');
-            clearStockSelect();
             $('#mod-project-type').form('clear');
             $('.mod-project-type-modal').modal('hide');
             loadSearchProjectTypeList(1, 10, 'search');

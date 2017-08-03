@@ -2,9 +2,9 @@ function redirect(url) {
     window.location.href = url;
 }
 
-function setCookie(name, value) {
-    document.cookie = name + "=" + value + "; ";
-}
+// function setCookie(name, value) {
+//     document.cookie = name + "=" + value + "; ";
+// }
 
 //写cookies
 function setCookie(name, value) {
