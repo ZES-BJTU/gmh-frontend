@@ -357,7 +357,7 @@
                 var $sexId = $('<td class="employeeSexId" style="display:none">' + (data.sex == '男' ? 1 : 2) + '</td>');
                 var $sex = $('<td class="employeeSex">' + data.sex + '</td>');
                 var $phone = $('<td class="employeePhone">' + data.phone + '</td>');
-                var $employeeEntryDate = $('<td class="employeeEntryDate">' + toDatetime(data.entryDate) + '</td>');
+                var $employeeEntryDate = $('<td class="employeeEntryDate">' + toDatetimeMin(data.entryDate) + '</td>');
                 var jobVos = [];
                 var jobName = '';
                 $.each(data.jobVos, function (i, data) {

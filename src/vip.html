@@ -31,7 +31,7 @@
 
 <body>
   <button class="ui blue button fake-button" style="display:none;"></button>
-  <button class="ui blue button load-shop-list" style="display:none;"></button>
+  <button class="ui blue button load-vip-list" style="display:none;"></button>
   <div id="left-menu" class="ui left fixed vertical pointing menu">
     <a class="item" href="home.html">首页</a>
     <a class="item" href="reserve.html">预约管理</a>
@@ -64,16 +64,19 @@
     <div class="ui fluid container">
       <div class="ui grid">
         <div class="row">
-          <div class="four wide left floated left aligned column">
-            <button class="ui blue button new-shop">新建</button>
-          </div>
-          <div class="four wide right floated right aligned column">
-            <form id="" class="ui form search shop-search">
+          <div class="twelve wide left aligned column">
+            <form id="" class="ui form search vip-search">
               <div class="ui action input">
                 <input type="text" class="search-input" placeholder="请输入搜索内容">
+                <select class="ui selection dropdown vip-select">
+                  <option value="0">全部等级</option>
+                </select>
                 <button class="ui button submit">搜索</button>
               </div>
             </form>
+          </div>
+          <div class="four wide right aligned column">
+            <button class="ui blue button new-vip">新建</button>
           </div>
         </div>
         <div class="one column row">
@@ -81,14 +84,19 @@
             <table class="ui compact table theme">
               <thead>
                 <tr>
-                  <th>店铺名</th>
-                  <th>负责人</th>
-                  <th>负责人电话</th>
-                  <th>地址</th>
+                  <th>姓名</th>
+                  <th>手机号</th>
+                  <th>性别</th>
+                  <th>年龄</th>
+                  <th>生日</th>
+                  <th>等级</th>
+                  <th>有效期至</th>
+                  <th>美容储值</th>
+                  <th>美睫美甲储值</th>
                   <th>操作</th>
                 </tr>
               </thead>
-              <tbody id="shop-list">
+              <tbody id="vip-list">
               </tbody>
             </table>
           </div>
@@ -102,25 +110,54 @@
       </div>
     </div>
   </div>
-  <div class="ui mini modal new-shop-modal">
-    <div class="header">新建店铺</div>
+  <div class="ui mini modal new-vip-modal">
+    <div class="header">新建会员</div>
     <div class="content">
-      <form id="new-shop" class="ui form">
+      <form id="new-vip" class="ui form">
         <div class="field">
-          <label>店铺名</label>
-          <input type="text" name="shopName" placeholder="请输入店铺名">
+          <label>手机号</label>
+          <input type="text" name="vipMobile" placeholder="请输入手机号码">
         </div>
         <div class="field">
-          <label>负责人</label>
-          <input type="text" name="manager" placeholder="请输入负责人姓名">
+          <label>姓名</label>
+          <input type="text" name="vipName" placeholder="请输入会员姓名">
         </div>
         <div class="field">
-          <label>负责人电话</label>
-          <input type="text" name="phone" placeholder="请输入负责人电话">
+          <label>性别</label>
+          <select name="vipSex" class="ui selection dropdown">
+            <option value="0">女</option>
+            <option value="1">男</option>
+          </select>
         </div>
         <div class="field">
-          <label>地址</label>
-          <input type="text" name="address" placeholder="请输入地址">
+          <label>生日</label>
+          <input type="text" name="vipBirth" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>发卡日期</label>
+          <input type="text" name="vipJoinDate" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>有效期至</label>
+          <input type="text" name="vipValidDate" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>美容储值</label>
+          <input type="text" name="beautyMoney" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>美甲美睫储值</label>
+          <input type="text" name="nailMoney" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>等级</label>
+          <select name="vipLevel" class="ui fluid dropdown new-vip-select">
+            <option value="">请选择会员等级</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>备注</label>
+          <textarea name="remark" rows='3'></textarea>
         </div>
       </form>
     </div>
@@ -135,26 +172,55 @@
       </div>
     </div>
   </div>
-  <div class="ui mini modal mod-shop-modal">
-    <div class="header">修改店铺</div>
+  <div class="ui mini modal mod-vip-modal">
+    <div class="header">修改会员</div>
     <div class="content">
-      <span id="mod-shop-id" style="display:none"></span>
-      <form id="mod-shop" class="ui form">
+      <span id="mod-vip-id" style="display:none"></span>
+      <form id="mod-vip" class="ui form">
         <div class="field">
-          <label>店铺名</label>
-          <input type="text" name="shopName" placeholder="请输入店铺名">
+          <label>手机号</label>
+          <input type="text" name="vipMobile" placeholder="请输入手机号码">
         </div>
         <div class="field">
-          <label>负责人</label>
-          <input type="text" name="manager" placeholder="请输入负责人姓名">
+          <label>姓名</label>
+          <input type="text" name="vipName" placeholder="请输入会员姓名">
         </div>
         <div class="field">
-          <label>负责人电话</label>
-          <input type="text" name="phone" placeholder="请输入负责人电话">
+          <label>性别</label>
+          <select name="vipSex" class="ui selection dropdown">
+                  <option value="0">女</option>
+                  <option value="1">男</option>
+                </select>
         </div>
         <div class="field">
-          <label>地址</label>
-          <input type="text" name="address" placeholder="请输入地址">
+          <label>生日</label>
+          <input type="text" name="vipBirth" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>发卡日期</label>
+          <input type="text" name="vipJoinDate" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>有效期至</label>
+          <input type="text" name="vipValidDate" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>美容储值</label>
+          <input type="text" name="beautyMoney" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>美甲美睫储值</label>
+          <input type="text" name="nailMoney" placeholder="请选择">
+        </div>
+        <div class="field">
+          <label>等级</label>
+          <select name="vipLevel" class="ui fluid dropdown new-vip-select">
+            <option value="">请选择会员等级</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>备注</label>
+          <input type="text area" name="remark">
         </div>
       </form>
     </div>
@@ -169,12 +235,12 @@
       </div>
     </div>
   </div>
-  <div class="ui basic tiny modal del-shop-modal">
+  <div class="ui basic tiny modal del-vip-modal">
     <div class="ui icon header">
       <i class="trash icon"></i>确认删除？
     </div>
     <div class="content">
-      <span id="del-shop-id" style="display:none"></span>
+      <span id="del-vip-id" style="display:none"></span>
     </div>
     <div class="actions delete-action">
       <div class="ui black deny right labeled icon button">
@@ -190,30 +256,60 @@
   <script>
     // 存储搜索的信息,用于点击页码时调用
     var searchInfo = '';
+    var searchLevelId = '';
+    var vipLevelData = [];
     $(document).ready(function () {
-      //店铺管理搜索
-      $('.shop-search').form({
+      //加载库存分类
+      $('.fake-button').api({
+        action: 'vipLevel getAll',
+        method: 'GET',
+        on: 'now',
+        beforeXHR: function (xhr) {
+          verifyToken();
+          xhr.setRequestHeader('X-token', getCookie('token'));
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        },
+        onSuccess: function (response) {
+          if (response.error != null) {
+            alert(response.code + ' : ' + response.error);
+          } else {
+            $('.vip-select select').find('option:not(:first)').remove();
+            vipLevelData = response.data;
+            $.each(response.data, function (i, data) {
+              var $option = $('<option value="' + data.id + '">' + data.levelName + '</option>');
+              $('.vip-select select').append($option);
+            })
+            $('.vip-select select').val(0);
+          }
+        },
+        onFailure: function (response) {
+          alert('服务器暂无响应');
+        }
+      })
+      //库存管理搜索
+      $('.vip-search').form({
         onSuccess: function (e) {
           //阻止表单的提交
           e.preventDefault();
           searchInfo = $('.search-input').val();
-          loadSearchShopList(1, 10, 'search');
+          searchLevelId = $('.vip-select select').val();
+          loadSearchVipList(1, 10, 'search');
         }
       })
 
-      $('.shop-search').form('submit');
+      $('.vip-search').form('submit');
 
       //分页按钮点击事件
       $(document).on('click', '.paging .item', function () {
-        loadSearchShopList($(this).text(), 10, 'paging');
+        loadSearchVipList($(this).text(), 10, 'paging');
       })
 
-      function loadSearchShopList(pagenum, pagesize, type) {
-        $('.load-shop-list').api({
-          action: 'shop search',
-          method: 'GET',
+      function loadSearchVipList(pagenum, pagesize, type) {
+        $('.load-vip-list').api({
+          action: 'vip search',
+          method: 'POST',
           serializeForm: true,
-          on:'now',
+          on: 'now',
           data: {
             pageNum: pagenum,
             pageSize: pagesize
@@ -226,9 +322,11 @@
           beforeSend: function (settings) {
             if (type == 'search') {
               settings.data.searchString = $('.search-input').val();
+              settings.data.levelId = $('.vip-select select').val();
               return settings;
             } else {
               settings.data.searchString = searchInfo;
+              settings.data.levelId = searchLevelId;
               return settings;
             }
           },
@@ -236,7 +334,7 @@
             if (response.error != null) {
               alert(response.code + ' : ' + response.error);
             } else {
-              $('#shop-list').empty();
+              $('#vip-list').empty();
               $('.paging').empty();
               for (var i = 0; i < response.data.totalPages; i++) {
                 var $item = $('<a class="item">' + (i + 1) + '</a>');
@@ -244,21 +342,34 @@
               }
               $.each(response.data.data, function (i, data) {
                 var $tr = $('<tr></tr>');
-                var $id = $('<td class="shopId" style="display:none">' + data.id + '</td>');
-                var $shopName = $('<td class="shopName">' + data.shopName + '</td>');
-                var $manager = $('<td class="shopManager">' + data.manager + '</td>');
-                var $phone = $('<td class="shopPhone">' + data.phone + '</td>');
-                var $address = $('<td class="shopAddress">' + data.address + '</td>');
+                var $id = $('<td class="vipId" style="display:none">' + data.id + '</td>');
+                var $vipMobile = $('<td class="vipMobile">' + data.phone + '</td>');
+                var $vipName = $('<td class="vipName">' + data.name + '</td>');
+                var $vipSex = $('<td class="vipSex">' + data.sex + '</td>');
+                var $levelId = $('<td class="levelId" style="display:none">' + data.memberLevelId + '</td>');
+                var $vipBirth = $('<td class="vipBirth">' + toDatetimeDay(data.birthday) + '</td>');
+                var $age = $('<td class="age">' + data.age + '</td>');
+                var $levelName = $('<td class="levelName">' + data.memberLevelName + '</td>');
+                var $validDate = $('<td class="validDate">' + toDatetimeDay(data.validDate) + '</td>');
+                var $beautyMoney = $('<td class="beautyMoney">' + data.beautyMoney + '</td>');
+                var $nailMoney = $('<td class="nailMoney">' + data.nailMoney + '</td>');
                 var $operate = $(
-                  '<td><button class="ui tiny orange button mod-shop">修改</button><button class="ui tiny red button del-shop">删除</button></td>'
+                  '<td><button class="ui tiny orange button mod-vip">修改</button><button class="ui tiny red button del-vip">删除</button></td>'
                 )
                 $tr.append($id);
-                $tr.append($shopName);
-                $tr.append($manager);
-                $tr.append($phone);
-                $tr.append($address);
+                $tr.append($vipName);
+                $tr.append($vipMobile);
+                
+                $tr.append($vipSex);
+              //  $tr.append($levelId);
+                $tr.append($age);
+                $tr.append($vipBirth);
+                $tr.append($levelName);
+                $tr.append($validDate);
+                $tr.append($beautyMoney);
+                $tr.append($nailMoney);
                 $tr.append($operate);
-                $('#shop-list').append($tr);
+                $('#vip-list').append($tr);
               })
               $('.paging').children().eq(pagenum - 1).addClass('active');
             }
@@ -269,78 +380,127 @@
         })
       }
 
-      //新建店铺模态框
-      $('.new-shop').on('click', function () {
-        $('.new-shop-modal').modal({
+      //新建库存模态框
+      $('.new-vip').on('click', function () {
+        loadVipLevelData();
+        $('.new-vip-modal').modal({
             closable: false,
             onDeny: function () {
-              $('#new-shop').form('clear');
+              clearVipSelect();
+              $('#new-vip').form('clear');
             },
             onApprove: function () {
-              $('#new-shop').submit();
+              $('#new-vip').submit();
               return false;
             }
           })
           .modal('show');
       })
-      //新建店铺信息提交
-      $('#new-shop').form({
+      //新建库存信息提交
+      $('#new-vip').form({
         on: 'change',
         inline: true,
         fields: {
-          newShopName: {
-            identifier: 'shopName',
+          newVipMobile: {
+            identifier: 'vipMobile',
             rules: [{
               type: 'empty',
-              prompt: '店铺名不能为空'
+              prompt: '手机号不能为空'
+            }, {
+              type: 'number',
+              prompt: '请输入正确的手机号'
+            }, {
+              type: 'exactLength[11]',
+              prompt: '请输入11位手机号'
             }]
           },
-          newShopManager: {
-            identifier: 'manager',
+          newVipName: {
+            identifier: 'vipName',
             rules: [{
               type: 'empty',
-              prompt: '负责人不能为空'
+              prompt: '会员姓名不能为空'
             }]
           },
-          newShopPhone: {
-            identifier: 'phone',
-            rules: [{
-                type: 'empty',
-                prompt: '电话不能为空'
-              },
-              {
-                type: 'number',
-                prompt: '请输入有效的电话'
-              }
-            ]
-          },
-          newShopAddress: {
-            identifier: 'address',
+          newVipSex: {
+            identifier: 'vipSex',
             rules: [{
               type: 'empty',
-              prompt: '地址不能为空'
+              prompt: '性别不能为空'
             }]
           },
+          newVipBirth: {
+            identifier: 'vipVirth',
+            rules: [{
+              type: 'empty',
+              prompt: '出生日期不能为空'
+            }]
+          },
+          newVipValidDate: {
+            identifier: 'vipValidDate',
+            rules: [{
+              type: 'empty',
+              prompt: '有效期不能为空'
+            }]
+          },
+          newBeautyMoney: {
+            identifier: 'beartyMoney',
+            rules: [{
+              type: 'empty',
+              prompt: '储值金额不能为空'
+            }, {
+              type: 'decimal',
+              prompt: '请输入数字'
+            }]
+          },
+          newNailMoney: {
+            identifier: 'nailMoney',
+            rules: [{
+              type: 'empty',
+              prompt: '储值金额不能为空'
+            }, {
+              type: 'decimal',
+              prompt: '请输入数字'
+            }]
+          },
+          newVipValidDate: {
+            identifier: 'vipValidDate',
+            rules: [{
+              type: 'empty',
+              prompt: '有效期不能为空'
+            }]
+          }
+
         },
         onSuccess: function (e) {
           //阻止表单的提交
           e.preventDefault();
         }
       }).api({
-        action: 'shop insert',
+        action: 'vip insert',
         method: 'POST',
         serializeForm: true,
         beforeXHR: function (xhr) {
           verifyToken();
           xhr.setRequestHeader('X-token', getCookie('token'));
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        },
+        beforeSend: function (settings) {
+          if (settings.data.beartyMoney == '') {
+            settings.data.beartyMoney = '0';
+          }
+          if (settings.data.nailMoney == '') {
+            settings.data.nailMoney = '0';
+          }
+          return settings;
         },
         onSuccess: function (response) {
           if (response.error != null) {
             alert(response.code + ' : ' + response.error);
           } else {
-            $('#new-shop').form('clear');
-            $('.new-shop-modal').modal('hide');
-            loadSearchShopList(1, 10,'search');
+            clearVipSelect();
+            $('#new-vip').form('clear');
+            $('.new-vip-modal').modal('hide');
+            loadSearchVipList(1, 10, 'search');
           }
         },
         onFailure: function (response) {
@@ -348,80 +508,124 @@
         },
       });
 
-      //修改店铺模态框
-      $(document).on('click', '.mod-shop', function () {
-        $('#mod-shop-id').text($(this).parent().parent().find('.shopId').text())
-        $('#mod-shop').find('input[name="shopName"]').val($(this).parent().parent().find('.shopName').text());
-        $('#mod-shop').find('input[name="manager"]').val($(this).parent().parent().find('.shopManager').text());
-        $('#mod-shop').find('input[name="phone"]').val($(this).parent().parent().find('.shopPhone').text());
-        $('#mod-shop').find('input[name="address"]').val($(this).parent().parent().find('.shopAddress').text());
-        $('.mod-shop-modal').modal({
+      //修改库存模态框
+      $(document).on('click', '.mod-vip', function () {
+        loadVipLevelData();
+        $('#mod-vip-id').text($(this).parent().parent().find('.vipId').text());
+        $('#mod-vip').find('input[name="vipName"]').val($(this).parent().parent().find('.vipName').text());
+        $('.mod-vip-select select').val($(this).parent().parent().find('.vipLevelId').text());
+        $('.mod-vip-select .text').removeClass('default');
+        $('.mod-vip-select .text').text($(this).parent().parent().find('.levelName').text());
+        $('#mod-vip').find('input[name="vipMobile"]').val($(this).parent().parent().find('.vipMobile').text());
+        $('#mod-vip').find('input[name="vipBirth"]').val($(this).parent().parent().find('.vipBirth').text());
+        $('#mod-vip').find('input[name="vipJoinDate"]').val($(this).parent().parent().find('.vipJoinDate').text());
+        $('#mod-vip').find('input[name="vipValidDate"]').val($(this).parent().parent().find('.vipValidDate').text());
+        $('#mod-vip').find('input[name="beautyMoney"]').val($(this).parent().parent().find('.beautyMoney').text());
+        $('#mod-vip').find('input[name="nailMoney"]').val($(this).parent().parent().find('.nailMoney').text());
+        $('.mod-vip-modal').modal({
             closable: false,
             onDeny: function () {
-              $('#mod-shop').form('clear');
-              $('#mod-shop-id').text('');
+              clearVipSelect();
+              $('#mod-vip').form('clear');
+              $('#mod-vip-id').text('');
             },
             onApprove: function () {
-              $('#mod-shop').submit();
+              $('#mod-vip').submit();
               return false;
             }
           })
           .modal('show');
       })
-      //修改店铺信息提交
-      $('#mod-shop').form({
+      //修改库存信息提交
+      $('#mod-vip').form({
         on: 'change',
         inline: true,
         fields: {
-          modShopName: {
-            identifier: 'shopName',
+          modVipMobile: {
+            identifier: 'vipMobile',
             rules: [{
               type: 'empty',
-              prompt: '店铺名不能为空'
+              prompt: '手机号不能为空'
+            }, {
+              type: 'number',
+              prompt: '请输入正确的手机号'
+            }, {
+              type: 'exactLength[11]',
+              prompt: '请输入11位手机号'
             }]
           },
-          modShopManager: {
-            identifier: 'manager',
+          modVipName: {
+            identifier: 'vipName',
             rules: [{
               type: 'empty',
-              prompt: '负责人不能为空'
+              prompt: '会员姓名不能为空'
             }]
           },
-          modShopPhone: {
-            identifier: 'phone',
-            rules: [{
-                type: 'empty',
-                prompt: '电话不能为空'
-              },
-              {
-                type: 'number',
-                prompt: '请输入有效的电话'
-              }
-            ]
-          },
-          modShopAddress: {
-            identifier: 'address',
+          modVipSex: {
+            identifier: 'vipSex',
             rules: [{
               type: 'empty',
-              prompt: '地址不能为空'
+              prompt: '性别不能为空'
             }]
           },
+          modVipBirth: {
+            identifier: 'vipVirth',
+            rules: [{
+              type: 'empty',
+              prompt: '出生日期不能为空'
+            }]
+          },
+          modVipValidDate: {
+            identifier: 'vipValidDate',
+            rules: [{
+              type: 'empty',
+              prompt: '有效期不能为空'
+            }]
+          },
+          modBeautyMoney: {
+            identifier: 'beartyMoney',
+            rules: [{
+              type: 'empty',
+              prompt: '储值金额不能为空'
+            }, {
+              type: 'decimal',
+              prompt: '请输入数字'
+            }]
+          },
+          modNailMoney: {
+            identifier: 'nailMoney',
+            rules: [{
+              type: 'empty',
+              prompt: '储值金额不能为空'
+            }, {
+              type: 'decimal',
+              prompt: '请输入数字'
+            }]
+          },
+          modVipValidDate: {
+            identifier: 'vipValidDate',
+            rules: [{
+              type: 'empty',
+              prompt: '有效期不能为空'
+            }]
+          }
         },
         onSuccess: function (e) {
           //阻止表单的提交
           e.preventDefault();
         }
       }).api({
-        action: 'shop update',
+        action: 'vip update',
         method: 'POST',
         serializeForm: true,
         beforeXHR: function (xhr) {
           verifyToken();
           xhr.setRequestHeader('X-token', getCookie('token'));
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
         },
         beforeSend: function (settings) {
-          if ($('#mod-shop-id').text() != '') {
-            settings.data.id = $('#mod-shop-id').text();
+          if ($('#mod-vip-id').text() != '') {
+            settings.data.id = $('#mod-vip-id').text();
             return settings;
           } else {
             alert('ID为空');
@@ -432,10 +636,11 @@
           if (response.error != null) {
             alert(response.code + ' : ' + response.error);
           } else {
-            $('#mod-shop-id').text('');
-            $('#mod-shop').form('clear');
-            $('.mod-shop-modal').modal('hide');
-            loadSearchShopList(1, 10,'search');
+            $('#mod-vip-id').text('');
+            clearVipSelect();
+            $('#mod-vip').form('clear');
+            $('.mod-vip-modal').modal('hide');
+            loadSearchVipList(1, 10, 'search');
           }
         },
         onFailure: function (response) {
@@ -443,26 +648,27 @@
         }
       });
 
-      //删除店铺模态框
-      $(document).on('click', '.del-shop', function () {
-        $('#del-shop-id').text($(this).parent().parent().find('.shopId').text())
-        $('.del-shop-modal').modal({
+      //删除库存模态框
+      $(document).on('click', '.del-vip', function () {
+        $('#del-vip-id').text($(this).parent().parent().find('.vipId').text())
+        $('.del-vip-modal').modal({
             closable: false,
             onDeny: function () {
-              $('#del-shop-id').text('');
+              $('#del-vip-id').text('');
             },
             onApprove: function () {
               $('.fake-button').api({
-                action: 'shop delByIds',
+                action: 'vip delete',
                 method: 'POST',
                 on: 'now',
                 beforeXHR: function (xhr) {
                   verifyToken();
                   xhr.setRequestHeader('X-token', getCookie('token'));
+                  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
                 },
                 beforeSend: function (settings) {
-                  if ($('#del-shop-id').text() != '') {
-                    settings.data.id = $('#del-shop-id').text();
+                  if ($('#del-vip-id').text() != '') {
+                    settings.data.id = $('#del-vip-id').text();
                     return settings;
                   } else {
                     alert('ID为空');
@@ -473,9 +679,9 @@
                   if (response.error != null) {
                     alert(response.code + ' : ' + response.error);
                   } else {
-                    $('#del-shop-id').text('');
-                    $('.del-shop-modal').modal('hide');
-                    loadSearchShopList(1, 10,'search');
+                    $('#del-vip-id').text('');
+                    $('.del-vip-modal').modal('hide');
+                    loadSearchVipList(1, 10, 'search');
                   }
                 },
                 onFailure: function (response) {
@@ -487,6 +693,21 @@
           })
           .modal('show');
       })
+
+      function loadVipLevelData() {
+        $.each(vipLevelData, function (i, data) {
+          var $option = $('<option value="' + data.id + '">' + data.levelName + '</option>');
+          $('.new-vip-select select').append($option);
+          $('.mod-vip-select select').append($option.clone());
+        })
+      }
+
+      function clearVipSelect() {
+        $('.new-vip-select select').find('option:not(:first)').remove();
+        $('.new-vip-select .text').text('');
+        $('.mod-vip-select select').find('option:not(:first)').remove();
+        $('.mod-vip-select .text').text('');
+      }
     })
   </script>
 </body>

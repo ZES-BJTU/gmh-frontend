@@ -50,7 +50,18 @@ function add0(m) {
     return m < 10 ? '0' + m : m
 }
 
-function toDatetime(timestamp) {
+function toDatetimeDay(timestamp) {
+    //timestamp是整数，否则要parseInt转换  
+    var time = new Date(parseInt(timestamp));
+    var y = time.getFullYear();
+    var m = time.getMonth() + 1;
+    var d = time.getDate();
+    var h = time.getHours();
+    var mm = time.getMinutes();
+    var s = time.getSeconds();
+    return y + '-' + add0(m) + '-' + add0(d);
+};
+function toDatetimeMin(timestamp) {
     //timestamp是整数，否则要parseInt转换  
     var time = new Date(parseInt(timestamp));
     var y = time.getFullYear();

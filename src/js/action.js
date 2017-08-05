@@ -46,4 +46,8 @@ $.fn.api.settings.api = {
   'vip update' : url+'/member/update',
   'vip delete' : url+'/member/delete',
   'vip search' : url+'/member/search',
+  'project search' : url+'/project/search',
+  'project insert' : url+'/project/insert',
+  'project update' : url+'/project/update',
+  'project delete' : url+'/project/delete',
 };
