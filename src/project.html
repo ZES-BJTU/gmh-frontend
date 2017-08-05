@@ -69,11 +69,11 @@
               <div class="ui action input">
                 <input type="text" class="search-input" placeholder="请输入搜索内容">
                 <select class="ui selection dropdown top-type-select">
-                  <option value="0">全部顶级分类</option>
-                  <option value="1">美甲</option>
-                  <option value="2">美睫</option>
-                  <option value="3">美容</option>
-                  <option value="4">产品</option>
+                  <option value="0" class="topType">全部顶级分类</option>
+                  <option value="1" class="topType">美甲</option>
+                  <option value="2" class="topType">美睫</option>
+                  <option value="3" class="topType">美容</option>
+                  <option value="4" class="topType">产品</option>
                 </select>
                 <select class="ui selection dropdown project-type-select">
                   <option value="0">全部美容项分类</option>
@@ -94,6 +94,7 @@
                   <th>美容项目名</th>
                   <th>顶级分类</th>
                   <th>美容项目分类</th>
+                  <th>零售价</th>
                   <th>操作</th>
                 </tr>
               </thead>
@@ -196,8 +197,69 @@
     // 存储搜索的信息,用于点击页码时调用
     var searchInfo = '';
     var searchTopTypeId = '';
-    var topTypeData = [];
+    var projectTypeData = [];
     $(document).ready(function () {
+      //加载全部美容项分类
+      $('.fake-button').api({
+        action: 'projectType getAll',
+        method: 'GET',
+        on: 'now',
+        beforeXHR: function (xhr) {
+          verifyToken();
+          xhr.setRequestHeader('X-token', getCookie('token'));
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        },
+        onSuccess: function (response) {
+          if (response.error != null) {
+            alert(response.code + ' : ' + response.error);
+          } else {
+            $('.project-type-select select').find('option:not(:first)').remove();
+            projectTypeData = response.data;
+            $.each(response.data, function (i, data) {
+              var $option = $('<option value="' + data.id + '">' + data.typeName + '</option>');
+              $('.project-type-select select').append($option);
+            })
+            $('.project-type-select select').val(0);
+          }
+        },
+        onFailure: function (response) {
+          alert('服务器暂无响应');
+        }
+      })
+      //点击顶级分类，切换美容项分类
+      $(document).on('change', '.top-type-select', function () {
+        var topType = $(this).find('select').val()
+        $('.fake-button').api({
+        action: 'projectType listByTopType',
+        method: 'GET',
+        on: 'now',
+        beforeXHR: function (xhr) {
+          verifyToken();
+          xhr.setRequestHeader('X-token', getCookie('token'));
+          xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        },
+        beforeSend: function (settings) {
+            settings.data.topType = topType;
+            return settings;
+        },
+        onSuccess: function (response) {
+          if (response.error != null) {
+            alert(response.code + ' : ' + response.error);
+          } else {
+            $('.project-type-select select').find('option:not(:first)').remove();
+            projectTypeData = response.data;
+            $.each(response.data, function (i, data) {
+              var $option = $('<option value="' + data.id + '">' + data.typeName + '</option>');
+              $('.project-type-select select').append($option);
+            })
+            $('.project-type-select select').val(0);
+          }
+        },
+        onFailure: function (response) {
+          alert('服务器暂无响应');
+        }
+      })
+      })
       //美容项目分类管理搜索
       $('.project-type-search').form({
         onSuccess: function (e) {

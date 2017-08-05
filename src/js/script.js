@@ -26,7 +26,7 @@ $(document).ready(function () {
             if (response.error != null) {
                 // $('#login').form('add errors', [response.code,response.error]);
             } else {
-                $('#user-name').text(response.data.principalName);
+                $('#user-name').text(response.data.name);
             }
         },
         onFailure: function (response) {

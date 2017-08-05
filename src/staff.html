@@ -113,11 +113,11 @@
         </div>
         <div class="field">
           <label>姓名</label>
-          <input type="text" name="principalName" placeholder="请输入姓名">
+          <input type="text" name="name" placeholder="请输入姓名">
         </div>
         <div class="field">
           <label>电话</label>
-          <input type="text" name="principalMobile" placeholder="请输入电话">
+          <input type="text" name="mobile" placeholder="请输入电话">
         </div>
         <div class="field">
           <label>店铺</label>
@@ -158,11 +158,11 @@
         </div>
         <div class="field">
           <label>姓名</label>
-          <input type="text" name="principalName" placeholder="请输入姓名">
+          <input type="text" name="name" placeholder="请输入姓名">
         </div>
         <div class="field">
           <label>电话</label>
-          <input type="text" name="principalMobile" placeholder="请输入电话">
+          <input type="text" name="mobile" placeholder="请输入电话">
         </div>
         <div class="field">
           <label>店铺</label>
@@ -291,8 +291,8 @@
                 var $tr = $('<tr></tr>');
                 var $id = $('<td class="staffId" style="display:none">' + data.id + '</td>');
                 var $email = $('<td class="staffEmail">' + data.email + '</td>');
-                var $principalName = $('<td class="principalName">' + data.principalName + '</td>');
-                var $principalMobile = $('<td class="principalMobile">' + data.principalMobile + '</td>');
+                var $staffName = $('<td class="staffName">' + data.name + '</td>');
+                var $staffMobile = $('<td class="staffMobile">' + data.mobile + '</td>');
                 var $storeId = $('<td class="storeId" style="display:none">' + data.storeId + '</td>');
                 var $storeName = $('<td class="storeName">' + data.storeName + '</td>');
                 var $staffLevel = $('<td class="staffLevel" style="display:none">' + data.staffLevel + '</td>');
@@ -310,8 +310,8 @@
                 )
                 $tr.append($id);
                 $tr.append($email);
-                $tr.append($principalName);
-                $tr.append($principalMobile);
+                $tr.append($staffName);
+                $tr.append($staffMobile);
                 $tr.append($storeId);
                 $tr.append($storeName);
                 $tr.append($staffLevel);
@@ -361,16 +361,16 @@
               }
             ]
           },
-          newPrincipalName: {
-            identifier: 'principalName',
+          newName: {
+            identifier: 'name',
             rules: [{
                 type: 'empty',
                 prompt: '姓名不能为空'
               }
             ]
           },
-          newPrincipalMobile: {
-            identifier: 'principalMobile',
+          newMobile: {
+            identifier: 'mobile',
             rules: [{
                 type: 'empty',
                 prompt: '电话不能为空'
@@ -429,8 +429,8 @@
         loadShopData();
         $('#mod-staff-id').text($(this).parent().parent().find('.staffId').text())
         $('#mod-staff').find('input[name="email"]').val($(this).parent().parent().find('.staffEmail').text());
-        $('#mod-staff').find('input[name="principalName"]').val($(this).parent().parent().find('.principalName').text());
-        $('#mod-staff').find('input[name="principalMobile"]').val($(this).parent().parent().find('.principalMobile').text());
+        $('#mod-staff').find('input[name="name"]').val($(this).parent().parent().find('.staffName').text());
+        $('#mod-staff').find('input[name="mobile"]').val($(this).parent().parent().find('.staffMobile').text());
         $('.mod-staff-shop-select select').val($(this).parent().parent().find('.storeId').text());
         $('.mod-staff-shop-select .text').removeClass('default');
         $('.mod-staff-shop-select .text').text($(this).parent().parent().find('.storeName').text());
@@ -468,16 +468,16 @@
               }
             ]
           },
-          modPrincipalName: {
-            identifier: 'principalName',
+          modName: {
+            identifier: 'name',
             rules: [{
                 type: 'empty',
                 prompt: '姓名不能为空'
               }
             ]
           },
-          modPrincipalMobile: {
-            identifier: 'principalMobile',
+          modMobile: {
+            identifier: 'mobile',
             rules: [{
                 type: 'empty',
                 prompt: '电话不能为空'
