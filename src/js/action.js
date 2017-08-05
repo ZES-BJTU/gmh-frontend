@@ -1,6 +1,6 @@
-var url = 'http://123.207.168.112:10000';
+//var url = 'http://123.207.168.112:10000';
 // var url = 'http://localhost:8080';
-// var url = 'http://192.168.199.139:8080';
+ var url = 'http://192.168.199.139:8080';
 $.fn.api.settings.api = {
   'staff login' : url+'/staff/login',
   'staff info' : url+'/staff/info',
@@ -37,4 +37,13 @@ $.fn.api.settings.api = {
   'projectType insert' : url+'/projectType/insert',
   'projectType update' : url+'/projectType/update',
   'projectType delete' : url+'/projectType/delete',
+  'vipLevel insert' : url+'/memberLevel/insert',
+  'vipLevel update' : url+'/memberLevel/update',
+  'vipLevel delete' : url+'/memberLevel/delete',
+  'vipLevel search' : url+'/memberLevel/search',
+  'vipLevel getAll' : url+'/memberLevel/listAll',
+  'vip insert' : url+'/member/insert',
+  'vip update' : url+'/member/update',
+  'vip delete' : url+'/member/delete',
+  'vip search' : url+'/member/search',
 };
