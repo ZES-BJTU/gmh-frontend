@@ -119,10 +119,6 @@
           <label>顶层分类</label>
           <select name="topType" class="ui fluid dropdown new-project-type-select">
             <option value="">请选择顶层分类</option>
-            <option value="1">美甲</option>
-            <option value="2">美睫</option>
-            <option value="3">美容</option>
-            <option value="4">产品</option>
           </select>
         </div>
       </form>
@@ -151,10 +147,6 @@
           <label>顶层分类</label>
           <select name="topType" class="ui fluid dropdown mod-project-type-select">
             <option value="">请选择顶层分类</option>
-            <option value="1">美甲</option>
-            <option value="2">美睫</option>
-            <option value="3">美容</option>
-            <option value="4">产品</option>
           </select>
         </div>
       </form>
@@ -274,9 +266,11 @@
 
       //新建美容项目分类模态框
       $('.new-project-type').on('click', function () {
+        loadTopTypeData();
         $('.new-project-type-modal').modal({
             closable: false,
             onDeny: function () {
+              clearSelect();
               $('#new-project-type').form('clear');
             },
             onApprove: function () {
@@ -323,6 +317,7 @@
           if (response.error != null) {
             alert(response.code + ' : ' + response.error);
           } else {
+            clearSelect();
             $('#new-project-type').form('clear');
             $('.new-project-type-modal').modal('hide');
             loadSearchProjectTypeList(1, 10, 'search');
@@ -335,14 +330,17 @@
 
       //修改库存模态框
       $(document).on('click', '.mod-project-type', function () {
+        loadTopTypeData();
         $('#mod-project-type-id').text($(this).parent().parent().find('.projectTypeId').text());
-        $('#mod-project-type').find('input[name="typeName"]').val($(this).parent().parent().find('.projectTypeName').text());
+        $('#mod-project-type').find('input[name="typeName"]').val($(this).parent().parent().find(
+          '.projectTypeName').text());
         $('.mod-project-type-select select').val($(this).parent().parent().find('.topTypeId').text());
         $('.mod-project-type-select .text').removeClass('default');
         $('.mod-project-type-select .text').text($(this).parent().parent().find('.topTypeName').text());
         $('.mod-project-type-modal').modal({
             closable: false,
             onDeny: function () {
+              clearSelect();
               $('#mod-project-type').form('clear');
               $('#mod-project-type-id').text('');
             },
@@ -399,6 +397,7 @@
           if (response.error != null) {
             alert(response.code + ' : ' + response.error);
           } else {
+            clearSelect();
             $('#mod-project-type-id').text('');
             $('#mod-project-type').form('clear');
             $('.mod-project-type-modal').modal('hide');
@@ -455,6 +454,38 @@
           })
           .modal('show');
       })
+
+      function loadTopTypeData() {
+        var data = [{
+            'id': 1,
+            'topTypeName': '美甲'
+          },
+          {
+            'id': 2,
+            'topTypeName': '美睫'
+          },
+          {
+            'id': 3,
+            'topTypeName': '美容'
+          },
+          {
+            'id': 4,
+            'topTypeName': '产品'
+          }
+        ];
+        $.each(data, function (i, data) {
+          var $option = $('<option value="' + data.id + '">' + data.topTypeName + '</option>');
+          $('.new-project-type-select select').append($option);
+          $('.mod-project-type-select select').append($option.clone());
+        })
+      }
+
+      function clearSelect() {
+        $('.new-project-type-select select').find('option:not(:first)').remove();
+        $('.new-project-type-select .text').text('');
+        $('.mod-project-type-select select').find('option:not(:first)').remove();
+        $('.mod-project-type-select .text').text('');
+      }
     })
   </script>
 </body>
