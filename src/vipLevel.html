@@ -164,7 +164,7 @@
     // 存储搜索的信息,用于点击页码时调用
     var searchInfo = '';
     $(document).ready(function () {
-      //美容项目分类管理搜索
+      //会员等级管理搜索
       $('.vip-level-search').form({
         onSuccess: function (e) {
           //阻止表单的提交
@@ -236,7 +236,7 @@
         })
       }
 
-      //新建美容项目分类模态框
+      //新建会员等级模态框
       $('.new-vip-level').on('click', function () {
         $('.new-vip-level-modal').modal({
             closable: false,
@@ -250,7 +250,7 @@
           })
           .modal('show');
       })
-      //新建美容项目分类信息提交
+      //新建会员等级信息提交
       $('#new-vip-level').form({
         on: 'change',
         inline: true,
@@ -290,7 +290,7 @@
         },
       });
 
-      //修改库存模态框
+      //修改会员等级模态框
       $(document).on('click', '.mod-vip-level', function () {
         $('#mod-vip-level-id').text($(this).parent().parent().find('.vipLevelId').text());
         $('#mod-vip-level').find('input[name="levelName"]').val($(this).parent().parent().find('.levelName').text());
@@ -309,7 +309,7 @@
           })
           .modal('show');
       })
-      //修改库存信息提交
+      //修改会员等级信息提交
       $('#mod-vip-level').form({
         on: 'change',
         inline: true,
@@ -359,7 +359,7 @@
         }
       });
 
-      //删除库存模态框
+      //删除会员等级模态框
       $(document).on('click', '.del-vip-level', function () {
         $('#del-vip-level-id').text($(this).parent().parent().find('.vipLevelId').text())
         $('.del-vip-level-modal').modal({
