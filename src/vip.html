@@ -469,7 +469,7 @@
         inline: true,
         fields: {
           newVipMobile: {
-            identifier: 'vipMobile',
+            identifier: 'phone',
             rules: [{
               type: 'empty',
               prompt: '手机号不能为空'
@@ -482,7 +482,7 @@
             }]
           },
           newVipName: {
-            identifier: 'vipName',
+            identifier: 'name',
             rules: [{
               type: 'empty',
               prompt: '会员姓名不能为空'
@@ -509,8 +509,15 @@
               prompt: '有效期不能为空'
             }]
           },
+          newVipLevelDate: {
+            identifier: 'memberLevelId',
+            rules: [{
+              type: 'empty',
+              prompt: '会员等级不能为空'
+            }]
+          },
           newBeautyMoney: {
-            identifier: 'beartyMoney',
+            identifier: 'beautyMoney',
             rules: [{
               type: 'decimal',
               prompt: '请输入数字'
@@ -610,7 +617,7 @@
         inline: true,
         fields: {
           modVipMobile: {
-            identifier: 'vipMobile',
+            identifier: 'phone',
             rules: [{
               type: 'empty',
               prompt: '手机号不能为空'
@@ -623,7 +630,7 @@
             }]
           },
           modVipName: {
-            identifier: 'vipName',
+            identifier: 'name',
             rules: [{
               type: 'empty',
               prompt: '会员姓名不能为空'
@@ -650,8 +657,15 @@
               prompt: '有效期不能为空'
             }]
           },
+          modVipLevelDate: {
+            identifier: 'memberLevelId',
+            rules: [{
+              type: 'empty',
+              prompt: '会员等级不能为空'
+            }]
+          },
           modBeautyMoney: {
-            identifier: 'beartyMoney',
+            identifier: 'beautyMoney',
             rules: [{
               type: 'decimal',
               prompt: '请输入数字'
@@ -688,8 +702,8 @@
         beforeSend: function (settings) {
           if ($('#mod-vip-id').text() != '') {
             settings.data.id = $('#mod-vip-id').text();
-            if (settings.data.beartyMoney == '') {
-              settings.data.beartyMoney = '0';
+            if (settings.data.beautyMoney == '') {
+              settings.data.beautyMoney = '0';
             }
             if (settings.data.nailMoney == '') {
               settings.data.nailMoney = '0';
