@@ -104,3 +104,8 @@ body {
 .new-employee-modal .ui.checkbox {
   margin: 5px 15px 0 15px;
 }
+td.remark {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

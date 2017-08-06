@@ -1,4 +1,4 @@
-//var url = 'http://123.207.168.112:10000';
+// var url = 'http://123.207.168.112:10000';
 // var url = 'http://localhost:8080';
  var url = 'http://192.168.199.139:8080';
 $.fn.api.settings.api = {
@@ -50,4 +50,13 @@ $.fn.api.settings.api = {
   'project insert' : url+'/project/insert',
   'project update' : url+'/project/update',
   'project delete' : url+'/project/delete',
+  'project listByProjectType' : url+'/project/listByProjectType',
+  'appointment search' : url+'/appointment/search',
+  'appointment insert' : url+'/appointment/insert',
+  'appointment update' : url+'/appointment/update',
+  'appointment cancel' : url+'/appointment/cancel',
+  'appointment start' : url+'/appointment/start',
+  'appointment finish' : url+'/appointment/finish',
+  'appointment remind' : url+'/appointment/remind',
+  'appointment listEmployeesByProject' : url+'/appointment/listEmployeesByProject',
 };

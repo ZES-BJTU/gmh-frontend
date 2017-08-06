@@ -354,7 +354,7 @@
                 var $tr = $('<tr></tr>');
                 var $id = $('<td class="employeeId" style="display:none">' + data.id + '</td>');
                 var $employeeName = $('<td class="employeeName">' + data.emName + '</td>');
-                var $sexId = $('<td class="employeeSexId" style="display:none">' + (data.sex == '男' ? 1 : 2) + '</td>');
+                var $sexId = $('<td class="employeeSexId" style="display:none">' + (data.sex == '男' ? 1 : 0) + '</td>');
                 var $sex = $('<td class="employeeSex">' + data.sex + '</td>');
                 var $phone = $('<td class="employeePhone">' + data.phone + '</td>');
                 var $employeeEntryDate = $('<td class="employeeEntryDate">' + toDatetimeMin(data.entryDate) + '</td>');

@@ -92,8 +92,8 @@
               <thead>
                 <tr>
                   <th>美容项目名</th>
-                  <th>顶级分类</th>
                   <th>美容项目分类</th>
+                  <th>顶级分类</th>
                   <th>零售价</th>
                   <th>操作</th>
                 </tr>
@@ -242,84 +242,26 @@
       //点击顶级分类，切换美容项分类
       $(document).on('change', '.top-type-select', function () {
         var topType = $(this).find('select').val();
-        if(topType == ''){
+        if (topType == '') {
           return;
         }
-        $('.fake-button').api({
-          action: 'projectType listByTopType',
-          method: 'GET',
-          on: 'now',
-          beforeXHR: function (xhr) {
-            verifyToken();
-            xhr.setRequestHeader('X-token', getCookie('token'));
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-          },
-          beforeSend: function (settings) {
-            settings.data.topType = topType;
-            return settings;
-          },
-          onSuccess: function (response) {
-            if (response.error != null) {
-              alert(response.code + ' : ' + response.error);
-            } else {
-               $('.project-type-select select').find('option:not(:first)').remove();
-              projectTypeData = response.data;
-              $.each(response.data, function (i, data) {
-                var $option = $('<option value="' + data.id + '">' + data.typeName + '</option>');
-                $('.project-type-select select').append($option);
-              })
-              $('.project-type-select select').val(0);
-            }
-          },
-          onFailure: function (response) {
-            alert('服务器暂无响应');
-          }
-        })
+        loadProjectTypeByTopType(topType, $('.project-type-select select'), 'load', null);
       })
-      //新增和修改时，点击顶级分类，切换美容项分类
-      $(document).on('change', '.new-project-top-type-select,.mod-project-top-type-select', function () {
+      //新增时，点击顶级分类，切换美容项分类
+      $(document).on('change', '.new-project-top-type-select', function () {
         var topType = $(this).find('select').val();
-        if(topType == ''){
+        if (topType == '') {
           return;
         }
-        $('.fake-button').api({
-          action: 'projectType listByTopType',
-          method: 'GET',
-          on: 'now',
-          beforeXHR: function (xhr) {
-            verifyToken();
-            xhr.setRequestHeader('X-token', getCookie('token'));
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-          },
-          beforeSend: function (settings) {
-            settings.data.topType = topType;
-            return settings;
-          },
-          onSuccess: function (response) {
-            if (response.error != null) {
-              alert(response.code + ' : ' + response.error);
-            } else {
-              $('.new-project-type-select select').find('option:not(:first)').remove();
-              $('.mod-project-type-select select').find('option:not(:first)').remove();
-              projectTypeData = response.data;
-              $.each(response.data, function (i, data) {
-                var $option = $('<option value="' + data.id + '">' + data.typeName + '</option>');
-                $('.new-project-type-select select').append($option);
-                $('.mod-project-type-select select').append($option.clone());
-              })
-              
-              $('.new-project-type-select .select').val('');
-              $('.new-project-type-select .text').addClass('default');
-              $('.new-project-type-select .text').text('请选择美容项目分类');
-              $('.mod-project-type-select .select').val('');
-              $('.mod-project-type-select .text').addClass('default');
-              $('.mod-project-type-select .text').text('请选择美容项目分类');
-            }
-          },
-          onFailure: function (response) {
-            alert('服务器暂无响应');
-          }
-        })
+        loadProjectTypeByTopType(topType, $('.new-project-type-select select'), 'new', null);
+      })
+      //修改时，点击顶级分类，切换美容项分类
+      $(document).on('change', '.mod-project-top-type-select', function () {
+        var topType = $(this).find('select').val();
+        if (topType == '') {
+          return;
+        }
+        loadProjectTypeByTopType(topType, $('.mod-project-type-select select'), 'mod', null);
       })
       //美容项目管理搜索
       $('.project-search').form({
@@ -381,8 +323,7 @@
               $.each(response.data.data, function (i, data) {
                 var $tr = $('<tr></tr>');
                 var $id = $('<td class="projectId" style="display:none">' + data.id + '</td>');
-                var $projectName = $('<td class="projectName">' + data.projectName +
-                  '</td>');
+                var $projectName = $('<td class="projectName">' + data.projectName + '</td>');
                 var $projectTypeId = $('<td class="projectTypeId" style="display:none">' + data.typeId + '</td>');
                 var $projectTypeName = $('<td class="projectTypeName">' + data.typeName + '</td>');
                 var $topTypeId = $('<td class="topTypeId" style="display:none">' + data.topType + '</td>');
@@ -426,7 +367,7 @@
           })
           .modal('show');
       })
-      //新建美容项目分类信息提交
+      //新建美容项目信息提交
       $('#new-project').form({
         on: 'change',
         inline: true,
@@ -457,7 +398,7 @@
             rules: [{
               type: 'empty',
               prompt: '美容项目原价不能为空'
-            },{
+            }, {
               type: 'decimal',
               prompt: '请输入数字'
             }]
@@ -491,20 +432,24 @@
         },
       });
 
-      //修改库存模态框
+      //修改美容项目模态框
       $(document).on('click', '.mod-project', function () {
         loadTopTypeData();
         $('#mod-project-id').text($(this).parent().parent().find('.projectId').text());
         $('#mod-project').find('input[name="projectName"]').val($(this).parent().parent().find('.projectName').text());
-        $('.mod-project-top-type-select select').val($(this).parent().parent().find('.topTypeId').text());
+        var topType = $(this).parent().parent().find('.topTypeId').text();
+        $('.mod-project-top-type-select select').val(topType);
         $('.mod-project-top-type-select .text').removeClass('default');
         $('.mod-project-top-type-select .text').text($(this).parent().parent().find('.topTypeName').text());
+        //为防止异步的问题，将信息加载放在success里面
         var projectTypeId = $(this).parent().parent().find('.projectTypeId').text();
         var projectTypeName = $(this).parent().parent().find('.projectTypeName').text();
-        $('.mod-project-type-select select').append($('<option value="' + projectTypeId + '">' + projectTypeName + '</option>'));
-        $('.mod-project-type-select select').val(projectTypeId);
-        $('.mod-project-type-select .text').removeClass('default');
-        $('.mod-project-type-select .text').text($(this).parent().parent().find('.projectTypeName').text());
+        var info = {
+          'projectTypeId': projectTypeId,
+          'projectTypeName': projectTypeName
+        };
+        loadProjectTypeByTopType(topType, $('.mod-project-type-select select'), 'beforeMod', info);
+
         $('#mod-project').find('input[name="retailPrice"]').val($(this).parent().parent().find('.retailPrice').text());
         $('.mod-project-modal').modal({
             closable: false,
@@ -551,7 +496,7 @@
             rules: [{
               type: 'empty',
               prompt: '美容项目原价不能为空'
-            },{
+            }, {
               type: 'decimal',
               prompt: '请输入数字'
             }]
@@ -641,23 +586,65 @@
           .modal('show');
       })
 
-      function loadTopTypeData(){
-        var data = [
-          {
-            'id':1,
-            'topTypeName':'美甲'
+      function loadProjectTypeByTopType(topType, $select, type, info) {
+        $('.fake-button').api({
+          action: 'projectType listByTopType',
+          method: 'GET',
+          on: 'now',
+          beforeXHR: function (xhr) {
+            verifyToken();
+            xhr.setRequestHeader('X-token', getCookie('token'));
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+          },
+          beforeSend: function (settings) {
+            settings.data.topType = topType;
+            return settings;
+          },
+          onSuccess: function (response) {
+            if (response.error != null) {
+              alert(response.code + ' : ' + response.error);
+            } else {
+              $select.find('option:not(:first)').remove();
+              projectTypeData = response.data;
+              $.each(response.data, function (i, data) {
+                var $option = $('<option value="' + data.id + '">' + data.typeName + '</option>');
+                $select.append($option);
+              })
+            }
+            if (type == 'load') {
+              $select.val(0);
+            } else if (type == 'new' || type == 'mod') {
+              $select.val('');
+              $select.parent().find('.text').addClass('default');
+              $select.parent().find('.text').text('请选择美容项目分类');
+            } else if (type == 'beforeMod') {
+              $select.val(info.projectTypeId);
+              $select.parent().find('.text').removeClass('default');
+              $select.parent().find('.text').text(info.projectTypeName);
+            }
+          },
+          onFailure: function (response) {
+            alert('服务器暂无响应');
+          }
+        })
+      }
+
+      function loadTopTypeData() {
+        var data = [{
+            'id': 1,
+            'topTypeName': '美甲'
           },
           {
-            'id':2,
-            'topTypeName':'美睫'
+            'id': 2,
+            'topTypeName': '美睫'
           },
           {
-            'id':3,
-            'topTypeName':'美容'
+            'id': 3,
+            'topTypeName': '美容'
           },
           {
-            'id':4,
-            'topTypeName':'产品'
+            'id': 4,
+            'topTypeName': '产品'
           }
         ];
         $.each(data, function (i, data) {
@@ -666,6 +653,7 @@
           $('.mod-project-top-type-select select').append($option.clone());
         })
       }
+
       function clearSelect() {
         $('.new-project-top-type-select select').find('option:not(:first)').remove();
         $('.new-project-top-type-select .text').text('');
