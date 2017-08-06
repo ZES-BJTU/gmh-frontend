@@ -50,6 +50,7 @@ $.fn.api.settings.api = {
   'project insert' : url+'/project/insert',
   'project update' : url+'/project/update',
   'project delete' : url+'/project/delete',
+  'project query' : url+'/project/query',
   'project listByProjectType' : url+'/project/listByProjectType',
   'appointment search' : url+'/appointment/search',
   'appointment insert' : url+'/appointment/insert',
@@ -59,4 +60,7 @@ $.fn.api.settings.api = {
   'appointment finish' : url+'/appointment/finish',
   'appointment remind' : url+'/appointment/remind',
   'appointment listEmployeesByProject' : url+'/appointment/listEmployeesByProject',
+  'record search' : url+'/consume/search',
+  'record create' : url+'/consume/create',
+  'record export' : url+'/consume/export',
 };

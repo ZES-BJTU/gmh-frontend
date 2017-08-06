@@ -327,7 +327,7 @@
         autoclose: 1,
         todayHighlight: 1,
         startView: 2,
-        forceParse: 0,
+        forceParse: true,
         showMeridian: 1
       }).on('changeDate', function (ev) {
         $('#beginTime').focus();
@@ -340,7 +340,7 @@
         autoclose: 1,
         todayHighlight: 1,
         startView: 2,
-        forceParse: 0,
+        forceParse: true,
         showMeridian: 1
       }).on('changeDate', function (ev) {
         $('#endTime').focus();
@@ -353,7 +353,7 @@
         autoclose: 1,
         todayHighlight: 1,
         startView: 2,
-        forceParse: 0,
+        forceParse: true,
         showMeridian: 1
       }).on('changeDate', function (ev) {
         $('#beginTime').focus();
@@ -366,7 +366,7 @@
         autoclose: 1,
         todayHighlight: 1,
         startView: 2,
-        forceParse: 0,
+        forceParse: true,
         showMeridian: 1
       }).on('changeDate', function (ev) {
         $('#endTime').focus();
@@ -986,8 +986,7 @@
               type: 'decimal',
               prompt: '请输入数字'
             }]
-          },
-
+          }
         },
         onSuccess: function (e) {
           //阻止表单的提交
